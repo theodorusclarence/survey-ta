@@ -1,14 +1,12 @@
 <FormProvider {...methods}>
   <form>
-    <DropzoneInput
-      containerClassName='@lg:col-span-2'
-      id='kk.kk'
-      label='Unggah Kartu Keluarga'
+    <Checkbox
+      name='agreement'
+      label='Saya menyetujui syarat dan ketentuan di atas'
+      value='agree'
       validation={{
-        required: `Kartu Keluarga harus diisi`,
+        required: 'Anda harus menyetujui syarat dan ketentuan',
       }}
-      accept={IMAGE_UPLOAD_ALLOWED_EXTENSION}
-      helperText={IMAGE_UPLOAD_HELPER_TEXT}
     />
   </form>
 </FormProvider>;
