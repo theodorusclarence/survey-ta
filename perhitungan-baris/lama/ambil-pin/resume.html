@@ -1,0 +1,260 @@
+<?php
+if ($this->session->userdata("datadiri")) { $nama =
+$this->session->userdata("datadiri")["data_siswa"]->smp_nama_siswa; $smp_uasbn =
+$this->session->userdata("datadiri")["data_siswa"]->smp_uasbn; } else { $nama =
+$smp_uasbn = null; } ?>
+
+<div class="panel-heading panel-heading-custom">
+  <h3
+    class="tulisan-tebel font-putih"
+    style="font-size: 25pt"
+  >
+    Konfirmasi Ulang<span class="tulisan-kecil-tipis"> Pengambilan PIN</span>
+  </h3>
+</div>
+<div
+  class="panel-body"
+  style="padding: 20px 30px"
+>
+  <h4 class="font-hijau"><strong>Data Diri</strong></h4>
+  <div class="form-group">
+    <label class="font-tipis">Nama</label>
+    <div class="bottom_border">
+      <span class="font-agak-tebel"><?= $nama ?></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="font-tipis">NISN</label>
+    <div class="bottom_border">
+      <span class="font-agak-tebel"><?= $smp_uasbn ?></span>
+    </div>
+  </div>
+  <div
+    id="resume-rapor-group"
+    style="display: none"
+  >
+    <hr />
+    <h4 class="font-hijau"><strong>Data Rapor</strong></h4>
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered">
+        <thead style="background-color: #0090a2; color: white">
+          <tr>
+            <th style="text-align: center">Semester</th>
+            <th style="text-align: center">Pendidikan Agama</th>
+            <th style="text-align: center">PPKn</th>
+            <th style="text-align: center">Bahasa Indonesia</th>
+            <th style="text-align: center">Matematika</th>
+            <th style="text-align: center">IPA</th>
+            <th style="text-align: center">IPS</th>
+            <th style="text-align: center">Bahasa Inggris</th>
+          </tr>
+        </thead>
+        <tbody
+          class="font-agak-tebel"
+          id="resume-rapor"
+          style="text-align: center"
+        ></tbody>
+      </table>
+    </div>
+    <ul
+      class="fileupload-result"
+      id="resume-berkas-rapor"
+      style="margin-top: 12"
+    ></ul>
+  </div>
+  <div
+    id="resume-kk-group"
+    style="display: none"
+  >
+    <hr />
+    <h4 class="font-hijau"><strong>Data Alamat</strong></h4>
+    <div class="form-group">
+      <label class="font-tipis">Kabupaten/Kota</label>
+      <div class="bottom_border">
+        <span
+          class="font-agak-tebel"
+          id="resume-kota"
+        ></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="font-tipis">Kecamatan</label>
+          <div class="bottom_border">
+            <span
+              class="font-agak-tebel"
+              id="resume-kecamatan"
+            ></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="font-tipis">Desa/Kelurahan</label>
+          <div class="bottom_border">
+            <span
+              class="font-agak-tebel"
+              id="resume-kelurahan"
+            ></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="font-tipis">RT/RW</label>
+          <div class="bottom_border">
+            <span
+              class="font-agak-tebel"
+              id="resume-rt-rw"
+            ></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="font-tipis">NIK</label>
+          <div class="bottom_border">
+            <span
+              class="font-agak-tebel"
+              id="resume-nik"
+            ></span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div
+          class="form-group"
+          id="resume-no-kk-container"
+        >
+          <label class="font-tipis">No KK</label>
+          <div class="bottom_border">
+            <span
+              class="font-agak-tebel"
+              id="resume-no-kk"
+            ></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="font-tipis">Alamat</label>
+      <div class="bottom_border">
+        <span
+          class="font-agak-tebel"
+          id="resume-alamat"
+        ></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="font-tipis">No HP/No WA/No Telepon</label>
+      <div class="bottom_border">
+        <span
+          class="font-agak-tebel"
+          id="resume-hp"
+        ></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="font-tipis">Tanggal Terbit KK/Surat Domisili</label>
+      <div class="bottom_border">
+        <span
+          class="font-agak-tebel"
+          id="resume-tanggal-terbit"
+        ></span>
+      </div>
+    </div>
+  </div>
+  <div
+    id="resume-lokasi-group"
+    style="display: none"
+  >
+    <hr />
+    <h4 class="font-hijau"><strong>Titik Lokasi</strong></h4>
+    <div
+      class="map-container"
+      style="position: relative"
+    >
+      <div
+        class="map"
+        id="resume-map"
+      ></div>
+      <div
+        class="center"
+        id="map-marker"
+      >
+        <img
+          class="img-no-drag"
+          src="<?=URL_STATIC?>img/marker.png"
+          alt=""
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    id="resume-berkas-group"
+    style="display: none"
+  >
+    <hr />
+    <h4 class="font-hijau"><strong>Berkas</strong></h4>
+    <ul
+      class="fileupload-result"
+      id="resume-berkas"
+      style="margin-top: 12"
+    ></ul>
+  </div>
+</div>
+
+<script>
+  const showMap = (lat, lon) => {
+    $('#resume-map').empty();
+    const mouseWheel = new ol.interaction.MouseWheelZoom({ useAnchor: false });
+
+    const interactions = ol.interaction
+      .defaults({
+        altShiftDragRotate: false,
+        shiftDragZoom: false,
+        pinchRotate: false,
+        mouseWheelZoom: true,
+        pinchZoom: true,
+        dragPan: false,
+      })
+      .extend([mouseWheel]);
+
+    //# BUILD MAP #
+    const source = new ol.source.OSM();
+    const layer = new ol.layer.Tile({
+      source: source,
+    });
+    const overviewMapControl = new ol.control.OverviewMap({
+      layers: [layer],
+    });
+
+    const view = new ol.View({
+      zoom: 19,
+      minZoom: 10,
+      maxZoom: 19,
+    });
+
+    view.setCenter(ol.proj.fromLonLat([lon, lat]));
+
+    const map = new ol.Map({
+      controls: ol.control.defaults().extend([overviewMapControl]),
+      interactions: interactions,
+      layers: [layer],
+      target: 'resume-map',
+      view: view,
+    });
+
+    map.interactions = interactions;
+    // https://stackoverflow.com/questions/43278569/openlayers-tiles-not-loading-on-a-tabed-web-page
+    setTimeout(() => {
+      map.updateSize();
+    }, 0);
+
+    $('#resume-map').css('height', '400px');
+    //# END of BUILD MAP #
+  };
+</script>

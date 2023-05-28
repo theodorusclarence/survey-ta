@@ -1,0 +1,103 @@
+<?php
+if (
+    $this->session->userdata("daftar_afirmasi") &&
+$this->session->userdata("pilihsekolah_afirmasi") &&
+$this->session->userdata("unggahberkas_afirmasi") ) { $nama =
+$this->session->userdata("daftar_afirmasi")["nama"]; $jalur =
+$this->session->userdata("daftar_afirmasi")["jalur"]; $user_login =
+$this->session->userdata("pilihsekolah_afirmasi")[ "user_login" ]; $butuhSK =
+$this->session->userdata("pilihsekolah_afirmasi")["butuhSK"]; $foto_sk_tdk_mampu
+= $this->session->userdata("unggahberkas_afirmasi")[ "foto" ]["sk_tdk_mampu"];
+$foto_sk_asosiasi_buruh = $this->session->userdata("unggahberkas_afirmasi")[
+"foto" ]["sk_asosiasi_buruh"]; $foto_sk_sehat =
+$this->session->userdata("unggahberkas_afirmasi")["foto"][ "sk_sehat" ];
+$nama_sekolah = $this->session->userdata("pilihsekolah_afirmasi")[
+"nama_sekolah" ]; $kode_paket_keahlian =
+$this->session->userdata("pilihsekolah_afirmasi")[ "kode_paket_keahlian" ];
+$nama_jurusan = $this->session->userdata("pilihsekolah_afirmasi")[
+"nama_jurusan" ]; $alamat_sekolah =
+$this->session->userdata("pilihsekolah_afirmasi")[ "alamat_sekolah" ]; } else {
+$user_login = $butuhSK = $nama = $jalur = null; $foto_sk_tdk_mampu =
+$foto_sk_asosiasi_buruh = $foto_sk_sehat = null; $nama_sekolah =
+$kode_paket_keahlian = $nama_jurusan = $alamat_sekolah = null; } ?>
+<div class="panel-heading panel-heading-custom">
+  <h3
+    class="tulisan-tebel font-putih"
+    style="font-size: 25pt"
+  >
+    Konfirmasi Data
+  </h3>
+</div>
+<div
+  class="panel-body"
+  style="padding: 20px 30px"
+>
+  <div class="row">
+    <div class="col-md-12">
+      <?php if ($this->session->flashdata("validation")) { ?>
+      <div class="alert alert-danger text-center">
+        <h4><?= $this->session->flashdata("validation") ?></h4>
+      </div>
+      <?php } ?>
+    </div>
+    <div class="col-sm-12">
+      <div class="alert alert-info text-center">
+        <h4 class="font-agak-tebel">
+          Pastikan seluruh data Anda di bawah sudah benar
+        </h4>
+      </div>
+    </div>
+    <div
+      class="col-md-12"
+      id="data-sekolah-pilihan"
+    ></div>
+    <div
+      class="col-md-12"
+      id="berkas"
+    ></div>
+  </div>
+</div>
+<script>
+  function konfirmasi_batal() {
+      swal({
+          title: 'Yakin Batalkan Pendaftaran?',
+          text: "Data yang anda masukkan sebelumnya tidak akan disimpan!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Belum yakin',
+          confirmButtonText: 'Ya, Batalkan Pendaftaran',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false,
+          showLoaderOnConfirm: true
+      }).then(function () {
+          window.location.href = "<?php echo base_url("daftar/afirmasi"); ?>";
+      })
+  }
+
+  $( document ).ready(function() {
+      $('#lanjut_proses').click(function(e){
+          e.preventDefault();
+          swal({
+              title: 'Yakin Kirim Data?',
+              text: "Data yang Anda telah dikirim tidak dapat dianulir!",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              cancelButtonText: 'Belum yakin',
+              confirmButtonText: 'Ya, Kirim Data',
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              allowEnterKey: false,
+              showLoaderOnConfirm: true
+          }).then(function () {
+              window.location.href = "<?php echo base_url(
+      "daftar/afirmasi/cetak"
+  ); ?>";
+          })
+      });
+  });
+</script>

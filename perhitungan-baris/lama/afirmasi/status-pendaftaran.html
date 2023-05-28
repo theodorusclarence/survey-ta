@@ -1,0 +1,65 @@
+<?php
+if ($this->session->userdata("daftar_afirmasi")) { $nama =
+$this->session->userdata("daftar_afirmasi")["data_siswa"][ "smp_nama_siswa" ];
+$no_uasbn = $this->session->userdata("daftar_afirmasi")["data_siswa"][
+"smp_uasbn" ]; $jalur = $this->session->userdata("daftar_afirmasi")["jalur"]; }
+else { $nama = $jalur = $no_uasbn = null; $nama_sekolah = $kode_paket_keahlian =
+$nama_jurusan = null; } ?>
+<div class="row font">
+  <h2 class="font-tebel text-center">
+    <span style="color: #ff0006">Latihan </span>
+    Pendaftaran Jalur Afirmasi PPDB <br />Jawa Timur 2022
+  </h2>
+  <hr />
+  <div class="col-md-12 col-md-border">
+    <div class="panel panel-default card-1">
+      <div class="panel-heading text-center panel-heading-custom">
+        <h3
+          class="tulisan-tebel font-putih"
+          style="font-size: 25pt"
+        >
+          Pendaftaran Telah Direkam
+        </h3>
+      </div>
+      <?= form_open_multipart(
+                "pendaftaran/semionline_cetak_bukti_pendaftaran",
+                ["id" =>
+      "form_cetak"] ) ?>
+      <div
+        class="panel-body text-center"
+        style="padding: 20px 30px"
+      >
+        <h1 class="font-tebel"><b>Anda Telah Melakukan Pendaftaran.</b></h1>
+        <h4>
+          Harap mencetak bukti pendaftaran pada tanggal 16 Juni Pada Halaman
+          Unduh Bukti.
+        </h4>
+        <input
+          hidden
+          readonly
+          name="no_uasbn"
+          type="text"
+          value="<?php echo $no_uasbn; ?>"
+        />
+        <button
+          type="submit"
+          id="lanjut_proses"
+          class="btn btn-info font-putih"
+        >
+          Cetak
+        </button>
+        <h4>Silahkan menunggu hasilnya hingga waktu yang telah ditentukan.</h4>
+        <hr />
+      </div>
+      <?= form_close() ?>
+      <div class="panel-footer text-center">
+        <a
+          href="<?php echo base_url(); ?>"
+          class="btn btn-primary font-putih"
+          >Kembali Ke Beranda</a
+        >
+        <span class="clearfix"></span>
+      </div>
+    </div>
+  </div>
+</div>

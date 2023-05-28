@@ -1,0 +1,458 @@
+<div class="panel-heading panel-heading-custom">
+  <h3
+    class="tulisan-tebel font-putih"
+    style="font-size: 25pt"
+  >
+    Pengisian Nilai Rapor
+  </h3>
+</div>
+<form
+  id="FormNilaiRapor"
+  method="post"
+  action=""
+>
+  <div
+    class="panel-body"
+    style="padding: 20px 30px"
+  >
+    <div class="col-sm-12">
+      <div
+        class="alert alert-info text-center font-tipis"
+        style="margin-bottom: 30px"
+      >
+        <h4>
+          Isikan Data Nilai Rapor Semester I-V Anda dan Sertakan 5 Foto Rapor
+          Anda per Semester
+        </h4>
+        <h4>Jika Anda Siswa Akselerasi, Hanya Sertakan 3 Foto Rapor</h4>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="form-group">
+        <div class="toggle-container">
+          <h4 style="display: inline-block; margin-right: 10px">
+            <b>Data Nilai Rapor</b>
+          </h4>
+          <p style="display: inline-block; color: red; margin-bottom: 15px">
+            * wajib diisi
+          </p>
+        </div>
+      </div>
+      <div
+        class="alert alert-warning text-center font-tipis"
+        style="margin-bottom: 30px; padding: 8px"
+      >
+        <h5 style="font-weight: 600">Apakah Anda Siswa Akselerasi?</h5>
+        <label class="radio-inline">
+          <input
+            type="radio"
+            value="0"
+            name="is_aksel"
+            checked
+          />Tidak
+        </label>
+        <label class="radio-inline">
+          <input
+            type="radio"
+            value="1"
+            name="is_aksel"
+          />Ya
+        </label>
+      </div>
+      <style>
+        #error-nilai em:not(:first-child) {
+          display: none !important;
+        }
+      </style>
+      <div id="error-nilai"></div>
+      <div
+        class="alert alert-info text-center font-tipis"
+        style="margin-bottom: 30px"
+      >
+        <h4>
+          Jika nilai berupa bilangan koma maka tanda koma diganti titik.
+          Contoh:89,00 -> 89.00
+        </h4>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+          <thead style="background-color: #0090a2; color: white">
+            <tr>
+              <th style="text-align: center; padding: 5px 30px">Semester</th>
+              <th style="text-align: center; padding: 5px 30px">
+                Pendidikan Agama
+              </th>
+              <th style="text-align: center; padding: 5px 30px">PPKn</th>
+              <th style="text-align: center; padding: 5px 30px">
+                Bahasa Indonesia
+              </th>
+              <th style="text-align: center; padding: 5px 30px">Matematika</th>
+              <th style="text-align: center; padding: 5px 30px">IPA</th>
+              <th style="text-align: center; padding: 5px 30px">IPS</th>
+              <th style="text-align: center; padding: 5px 30px">
+                Bahasa Inggris
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            class="font-agak-tebel"
+            style="text-align: center"
+          >
+            <?php for ($i = 0; $i < 5; $i++) { ?>
+            <tr class="semester-<?php echo $i + 1; ?>">
+              <td><?= $i + 1 ?></td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control semester-<?php echo $i + 1; ?>"
+                  id="agm[<?php echo $i; ?>]"
+                  name="agm[<?php echo $i; ?>]"
+                  value="<?php if (isset($agm[$i])) {
+                                    echo $agm[$i];
+                                } ?>"
+                  min="0"
+                  max="100"
+                  pattern="[0-9]+([\,|\.][0-9]+)?"
+                  step="0.01"
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control semester-<?php echo $i + 1; ?>"
+                  id="pkn[<?php echo $i; ?>]"
+                  name="pkn[<?php echo $i; ?>]"
+                  value="<?php if (isset($pkn[$i])) {
+                                    echo $pkn[$i];
+                                } ?>"
+                  min="0"
+                  max="100"
+                  pattern="[0-9]+([\,|\.][0-9]+)?"
+                  step="0.01"
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control semester-<?php echo $i + 1; ?>"
+                  id="ind[<?php echo $i; ?>]"
+                  name="ind[<?php echo $i; ?>]"
+                  value="<?php if (isset($ind[$i])) {
+                                    echo $ind[$i];
+                                } ?>"
+                  min="0"
+                  max="100"
+                  pattern="[0-9]+([\,|\.][0-9]+)?"
+                  step="0.01"
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control semester-<?php echo $i + 1; ?>"
+                  id="mat[<?php echo $i; ?>]"
+                  name="mat[<?php echo $i; ?>]"
+                  value="<?php if (isset($mat[$i])) {
+                                    echo $mat[$i];
+                                } ?>"
+                  min="0"
+                  max="100"
+                  pattern="[0-9]+([\,|\.][0-9]+)?"
+                  step="0.01"
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control semester-<?php echo $i + 1; ?>"
+                  id="ipa[<?php echo $i; ?>]"
+                  name="ipa[<?php echo $i; ?>]"
+                  value="<?php if (isset($ipa[$i])) {
+                                    echo $ipa[$i];
+                                } ?>"
+                  min="0"
+                  max="100"
+                  pattern="[0-9]+([\,|\.][0-9]+)?"
+                  step="0.01"
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control semester-<?php echo $i + 1; ?>"
+                  id="ips[<?php echo $i; ?>]"
+                  name="ips[<?php echo $i; ?>]"
+                  value="<?php if (isset($ips[$i])) {
+                                    echo $ips[$i];
+                                } ?>"
+                  min="0"
+                  max="100"
+                  pattern="[0-9]+([\,|\.][0-9]+)?"
+                  step="0.01"
+                  required
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control semester-<?php echo $i + 1; ?>"
+                  id="ing[<?php echo $i; ?>]"
+                  name="ing[<?php echo $i; ?>]"
+                  value="<?php if (isset($ing[$i])) {
+                                    echo $ing[$i];
+                                } ?>"
+                  min="0"
+                  max="100"
+                  pattern="[0-9]+([\,|\.][0-9]+)?"
+                  step="0.01"
+                  required
+                />
+              </td>
+            </tr>
+            <?php } ?>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group">
+        <h4 style="display: inline-block; margin-right: 10px">
+          <b>Foto Rapor</b>
+        </h4>
+        <p style="display: inline-block; color: red; margin-bottom: 15px">
+          * wajib diisi
+        </p>
+      </div>
+      <div
+        class="alert alert-warning text-center font-tipis"
+        style="margin-bottom: 30px"
+      >
+        <h4>Ekstensi Berkas Foto yang Diperbolehkan (.jpg, .jpeg, .png)</h4>
+        <h4>Ukuran Minimum Berkas Foto yang Diperbolehkan (100 KB)</h4>
+        <h4>Ukuran Maksimum Berkas Foto yang Diperbolehkan (400 KB)</h4>
+      </div>
+      <div class="input-group">
+        <span
+          class="input-group-btn"
+          style="vertical-align: top"
+        >
+          <span
+            class="btn btn-default btn-file"
+            id="file-rapor"
+            fileupload-result="#rapor-result"
+          >
+            Browse...
+          </span>
+        </span>
+        <div
+          id="filename"
+          class="form-control"
+          style="height: fit-content"
+        >
+          5 (3 apabila siswa akselerasi) Berkas Foto Rapor per Semester
+        </div>
+      </div>
+      <div>
+        <input
+          class="file-rapor"
+          value=""
+          readonly
+          name="file_rapor[]"
+          style="position: absolute; opacity: 0; height: 0"
+        />
+      </div>
+      <ul
+        class="fileupload-result"
+        id="rapor-result"
+        style="margin-top: 12"
+      >
+        <!-- tempat hasil uploadan -->
+      </ul>
+      <?php if ($datadiri["data_ambilpin"]->data_pin_verified == 1) { ?>
+      <div class="form-group">
+        <h4 style="display: inline-block; margin-right: 10px">
+          <b>Foto Surat Pernyataan</b>
+        </h4>
+        <p style="display: inline-block; color: red; margin-bottom: 15px">
+          * wajib diisi
+        </p>
+      </div>
+      <div class="input-group">
+        <span
+          class="input-group-btn"
+          style="vertical-align: top"
+        >
+          <span
+            class="btn btn-default btn-file"
+            id="file-pernyataan-rapor"
+            fileupload-result="#file-pernyataan-rapor-result"
+          >
+            <!-- yg diubah: id, fileupload-result -->
+            Browse...
+          </span>
+        </span>
+        <div
+          id="filename"
+          class="form-control"
+          style="height: fit-content; z-index: 0"
+        >
+          Foto Surat pernyataan bermaterai ditanda tangani oleh calon
+          siswa/orang tua dan mengetahui Kepala Sekolah SMP/MTs Asal.
+        </div>
+      </div>
+      <div>
+        <input
+          class="file-pernyataan-rapor"
+          value=""
+          readonly
+          name="file_pernyataan_rapor[]"
+          style="position: absolute; opacity: 0; height: 0"
+        />
+        <!-- yg diubah: class, name -->
+      </div>
+      <ul
+        class="fileupload-result"
+        id="file-pernyataan-rapor-result"
+        style="margin-top: 12"
+      >
+        <!-- yg diubah: id -->
+        <!-- tempat hasil uploadan -->
+      </ul>
+      <?php } ?>
+    </div>
+  </div>
+</form>
+<script>
+  $(function () {
+    'use strict';
+
+    $.fancybox.defaults.loop = true;
+    // Customize buttons
+    $('[data-fancybox="images"]').fancybox({
+      buttons: ['close'],
+    });
+  });
+</script>
+<script type="text/javascript">
+  $( document ).ready( function () {
+      const msg_nilai = {
+          required: "* Terdapat nilai yang belum terisi.",
+          min: "* Masukkan nilai diantara 0-100",
+          max: "* Masukkan nilai diantara 0-100"
+      };
+
+      var FormNilaiRapor__msg = {};
+      for (let index = 0; index < 5; index++) {
+          FormNilaiRapor__msg["agm["+index+"]"] = msg_nilai;
+          FormNilaiRapor__msg["pkn["+index+"]"] = msg_nilai;
+          FormNilaiRapor__msg["ind["+index+"]"] = msg_nilai;
+          FormNilaiRapor__msg["mat["+index+"]"] = msg_nilai;
+          FormNilaiRapor__msg["ipa["+index+"]"] = msg_nilai;
+          FormNilaiRapor__msg["ips["+index+"]"] = msg_nilai;
+          FormNilaiRapor__msg["ing["+index+"]"] = msg_nilai;
+      }
+
+      var FormNilaiRapor_validator = $( "#FormNilaiRapor" ).validate( {
+          rules: {
+  			'file_rapor[]': {
+  			  require_from_group: [1, ".file-rapor"]
+  			},
+              <?php if ($datadiri["data_ambilpin"]->data_pin_verified == 1) { ?>
+                  'file_pernyataan_rapor[]': {
+                      require_from_group: [1, ".file-pernyataan-rapor"]
+                  },
+              <?php } ?>
+          },
+          messages:  Object.assign(FormNilaiRapor__msg, {
+              'file_rapor[]': "* Belum melakukan unggah Rapor",
+              <?php if ($datadiri["data_ambilpin"]->data_pin_verified == 1) { ?>
+                  'file_pernyataan_rapor[]': "* Belum melakukan unggah Surat Pernyataan",
+              <?php } ?>
+          }),         //untuk messages error kustom
+          success: function(label) {
+              label.detach();
+          },
+          errorElement: "em",
+          errorPlacement: function ( error, element ) {
+              // Add the `help-block` class to the error element
+              error.addClass( "help-block" );
+
+              if(element.attr("class").match(/\bsemester-.*/)){
+                  error.appendTo( $('#error-nilai') );
+              } else if ( element.prop( "type" ) === "checkbox" ) {
+                  error.insertAfter( element.parent( "label" ) );
+              } else {
+                  error.insertAfter( element );
+              }
+          },
+          highlight: function ( element, errorClass, validClass ) {
+              $( element ).parent().addClass( "has-error" ).removeClass( "has-success" );
+          },
+          unhighlight: function (element, errorClass, validClass) {
+              $( element ).parent().removeClass( "has-error" );
+          },
+      });
+
+      fw_fv.push(FormNilaiRapor_validator);
+
+      var ButtonUploadRapor = new CustomUploadWizard($('#file-rapor'), $('#fileupload'), {
+          min:5, max:5,
+          name: 'Rapor',
+          target_name: 'file_rapor[]',
+          target_class: 'file-rapor',
+      },
+      [
+          { "name":"tipe_berkas", "value":"rapor"},
+          { "name":"smp_uasbn", "value":"<?= $smp_uasbn ?>"}
+      ],'<h5>Harap mengunggah berkas foto rapor anda. Harap mengunggah file berupa gambar jernih (.jpeg/.jpg/.png) dengan ukuran minimum 100 KB dan maksimum 400 KB</h5>');
+
+      <?php if ($datadiri["data_ambilpin"]->data_pin_verified == 1) { ?>
+          var ButtonUploadPernyataanKebenaranRapor = new CustomUploadWizard($('#file-pernyataan-rapor'), $('#fileupload'), {
+              min:1, max:1,
+              name: 'Surat Pernyataan',
+              target_name: 'file_pernyataan_rapor',
+              target_class: 'file-pernyataan-rapor',
+          },
+          [
+              { "name":"tipe_berkas", "value":"pernyataan_rapor"},
+              { "name":"smp_uasbn", "value":"<?= $smp_uasbn ?>"}
+          ],'<h5>Harap mengunggah berkas foto Surat pernyataan bermaterai bahwa nilai yang dimasukkan benar ditanda tangani oleh calon siswa/orang tua dan mengetahui Kepala Sekolah SMP/MTs Asal. Harap mengunggah file berupa gambar jernih (.jpeg/.jpg/.png) dengan ukuran minimum 100 KB dan maksimum 400 KB</h5>');
+      <?php } ?>
+
+      //# AKSELERASI #
+      $("input[name='is_aksel']").change(function(){
+
+          //kosongkan kembali hasil upload
+          $('#rapor-result').empty();
+
+          selected_value = $("input[name='is_aksel']:checked").val();
+          if (selected_value === "1") {
+              $('input.semester-4').prop('disabled', true).val('');
+              $('input.semester-5').prop('disabled', true).val('');
+
+              $('.semester-4').css({"backgroundColor": "#EEE"});
+              $('.semester-5').css({"backgroundColor": "#EEE"});
+
+              ButtonUploadRapor.options['min'] = 3;
+              ButtonUploadRapor.options['max'] = 3;
+          } else {
+              $('input.semester-4').prop('disabled', false);
+              $('input.semester-5').prop('disabled', false);
+
+              $('.semester-4').css({"backgroundColor": "#FFF"});
+              $('.semester-5').css({"backgroundColor": "#FFF"});
+
+              ButtonUploadRapor.options['min'] = 5;
+              ButtonUploadRapor.options['max'] = 5;
+          }
+          FormNilaiRapor_validator.form();
+      });
+      //# END of AKSELERASI #
+
+
+
+  });
+</script>

@@ -1,0 +1,459 @@
+<div class="panel-heading panel-heading-custom">
+  <h3
+    class="tulisan-tebel font-putih"
+    style="font-size: 25pt"
+  >
+    Pilih Lokasi Rumah
+  </h3>
+</div>
+<?php if (
+  isset($datadiri["__URGENT_ambil_lokasi"]) and
+  $datadiri["data_ambilpin"]->smp_status_berkas != -1 ) { if
+($datadiri["data_ambilpin"]->smp_alur <= 3) { echo
+<select
+  name="kab_kota_kk"
+  disabled
+>
+  <option value=" $datadiri['data_ambilpin']-">
+    smp_id_kotakab_kk _DUMMY" selected>
+  </option></select
+>; } else { echo
+<select
+  name="kab_kota_kk"
+  disabled
+>
+  <option value="' .$datadiri['data_ambilpin']-">
+    smp_id_kotakab_domisili ._DUMMY" selected>
+  </option></select
+>; } } ?>
+<div
+  class="panel-body"
+  style="padding: 20px 30px"
+>
+  <div>
+    <div
+      class="alert alert-info text-center font-tipis"
+      style="margin-bottom: 10px"
+    >
+      <h4>
+        Harap menentukan lokasi rumah Anda berdasarkan Kartu Keluarga atau Surat
+        Domisili
+      </h4>
+      <h4>
+        Jika mengisi data Surat Domisili pada langkah sebelumnya maka tentukan
+        lokasi berdasarkan Surat Domisili
+      </h4>
+    </div>
+  </div>
+  <form
+    id="FormAmbilLokasi"
+    method="post"
+    action=""
+  >
+    <div class="form-group no-margin-all">
+      <label
+        ><input
+          class="fake-hidden"
+          type="number"
+          name="lat"
+          id="lat"
+          readonly
+          required
+      /></label>
+    </div>
+    <div class="form-group no-margin-all">
+      <label
+        ><input
+          class="fake-hidden"
+          type="number"
+          name="lon"
+          id="lon"
+          readonly
+          required
+      /></label>
+    </div>
+    <div class="form-group no-margin-all">
+      <label
+        ><input
+          class="fake-hidden"
+          type="number"
+          name="near-school"
+          id="near-school"
+          readonly
+      /></label>
+    </div>
+    <div class="form-group no-margin-all">
+      <label
+        ><input
+          class="fake-hidden"
+          type="text"
+          name="near-school-npsn"
+          id="near-school-npsn"
+          readonly
+      /></label>
+    </div>
+    <div class="form-group no-margin-all">
+      <label
+        ><input
+          class="fake-hidden"
+          type="number"
+          name="near-school-jarak"
+          id="near-school-jarak"
+          readonly
+      /></label>
+    </div>
+  </form>
+  <div style="position: relative">
+    <div
+      class="input-group"
+      id="search-map"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Cari Alamat ..."
+      />
+      <span class="input-group-btn">
+        <button
+          class="btn btn-default"
+          id="search-btn"
+          type="button"
+        >
+          <span class="fa fa-search"></span>
+        </button>
+      </span>
+    </div>
+    <ul
+      class="dropdown-menu"
+      aria-labelledby="search-map"
+      style="top: 35px; left: 45px; width: 226"
+      id="search-result"
+    ></ul>
+  </div>
+  <div
+    class="map-container"
+    style="position: relative"
+  >
+    <div
+      class="map"
+      id="map"
+      style=""
+    ></div>
+    <div
+      class="center"
+      id="map-marker"
+    >
+      <button
+        class="btn btn-primary"
+        style="color: white; margin-bottom: 12"
+        id="pilihlokasi-btn"
+      >
+        Pilih Lokasi
+      </button>
+      <img
+        class="img-no-drag"
+        src="<?= URL_STATIC ?>img/marker.png"
+        alt=""
+      />
+    </div>
+    <div class="avoiding-layer">
+      <button
+        class="btn btn-primary"
+        style="color: #fff"
+        id="ambil-lokasi"
+      >
+        Ambil Lokasi
+      </button>
+    </div>
+  </div>
+  <div id="info"></div>
+  <div>
+    <p>Panduan Penitikan Lokasi</p>
+    <ol
+      class="nice-ol"
+      type="1"
+    >
+      <li>Klik tombol <b>"ambil lokasi"</b> yang terdapat pada tengah peta</li>
+      <li>
+        Ketikkan alamat lengkap tanpa nomor rumah pada kotak pencarian
+        <b>"cari alamat"</b>
+      </li>
+      <li>
+        Setelah hasil pencarian alamat ditampilkan, pilih alamat yang sesuai
+      </li>
+      <li>
+        Jika peta rumah sudah d tampilkan, untuk memperjelas titik lokasi maka
+        zoom in pada peta dengan menekan tombol
+        <b>"+"</b> pada pojok kiri atas peta
+      </li>
+      <li>
+        Gerakkan peta (Jika menggunakan smartphone maka gulirkan layar ke
+        kanan/ke kiri/ke atas/ke bawah, namun jika menggunakan PC/Laptop dengan
+        cara klik kiri
+        <b>kemudian tahan</b> disertai menggulirkan ke kanan/ke kiri/ke atas/ke
+        bawah) sampai pointer peta berada pada lokasi yang dituju
+      </li>
+      <li>
+        Jika pointer peta sudah sesuai maka tekan tombol
+        <b>"Pilih Lokasi"</b>
+      </li>
+      <li>
+        Jika ingin mengubah maka tekan tombol
+        <b>"ganti lokasi"</b>
+        , ulangi mulai langkah poin 2
+      </li>
+      <li>
+        Jika sudah yakin bahwa lokasi titik sudah tepat, silahkan tekan tombol
+        <b>"Selesai"</b>
+      </li>
+    </ol>
+  </div>
+</div>
+<script>
+  var map, layer;
+  var lat_elem;
+  var lon_elem;
+  var mapActivated = true;
+  var mouseWheel = new ol.interaction.MouseWheelZoom({ useAnchor: false }); //zoom scroll mouse tetap ditengah
+  //# MAP INTERACTIONS PROPERTIES #
+  var interactions = ol.interaction
+    .defaults({
+      altShiftDragRotate: false,
+      shiftDragZoom: false,
+      pinchRotate: false,
+      mouseWheelZoom: true,
+      pinchZoom: true,
+    })
+    .extend([mouseWheel]);
+
+  var interactions_disabled = ol.interaction.defaults({
+    altShiftDragRotate: false,
+    shiftDragZoom: false,
+    pinchRotate: false,
+    mouseWheelZoom: false,
+    pinchZoom: false,
+    dragPan: false,
+    keyboard: false,
+    doubleClickZoom: false,
+  });
+  //# End of MAP INTERACTIONS PROPERTIES #
+
+  function toggleMapActive() {
+    if (mapActivated) {
+      map.interactions = interactions_disabled;
+      $('#search-map').parent().css('display', 'none');
+      $('#pilihlokasi-btn').css('display', 'none');
+    } else {
+      map.interactions = interactions;
+      $('#search-map').parent().css('display', '');
+      $('#pilihlokasi-btn').css('display', '');
+      map.updateSize();
+      lat_elem.val('');
+      lon_elem.val('');
+    }
+    mapActivated = !mapActivated;
+  }
+  $(document).ready(function () {
+    lat_elem = $('#lat');
+    lon_elem = $('#lon');
+    var FormAmbilLokasi_validator = $('#FormAmbilLokasi').validate({
+      rules: {},
+      messages: {
+        lat: {
+          required: '* belum menentukan titik Lokasi',
+          min: '* koordinat tidak valid',
+          max: '* koordinat tidak valid',
+        },
+        lon: {
+          required: '* belum menentukan titik Lokasi',
+          min: '* koordinat tidak valid',
+          max: '* koordinat tidak valid',
+        },
+      },
+      success: function (label) {
+        label.detach();
+      },
+      errorElement: 'em',
+      errorPlacement: function (error, element) {
+        // Add the `help-block` class to the error element
+        error.addClass('help-block');
+
+        if (element.prop('type') === 'checkbox') {
+          error.insertAfter(element.parent('label'));
+        } else {
+          element.closest('.form-group').append(error);
+          // error.insertAfter( element );
+        }
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).parent().addClass('has-error').removeClass('has-success');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).parent().removeClass('has-error');
+      },
+    });
+
+    fw_fv.push(FormAmbilLokasi_validator);
+
+    //# BUILD MAP #
+    var source = new ol.source.OSM();
+    layer = new ol.layer.Tile({
+      source: source,
+    });
+    var overviewMapControl = new ol.control.OverviewMap({
+      layers: [layer],
+    });
+
+    var view = new ol.View({
+      center: ol.proj.fromLonLat([
+        lokasi_awal.lon,
+        lokasi_awal.lat, // taken from formwizard
+      ]),
+      zoom: 10,
+      minZoom: 10,
+      maxZoom: 19,
+    });
+
+    map = new ol.Map({
+      controls: ol.control.defaults().extend([overviewMapControl]),
+      interactions: interactions,
+      layers: [layer],
+      target: 'map',
+      view: view,
+    });
+    //# END of BUILD MAP #
+
+    //# MAP SEARCH BAR PROCESSOR #
+    const searchLocation = function (query) {
+      if ($('#search-map').attr('aria-expanded') === 'false') {
+        $('#search-map').dropdown('toggle');
+      }
+      var sr = $('#search-result');
+      sr.empty();
+      sr.append(
+        '<li><button class="btn" style="color: white;background-color: unset;" disabled><i class="fa fa-spinner fa-spin"></i> Loading</button></li>'
+      );
+      query = query.trim();
+      if (query === '') return;
+      const uri =
+        'https://nominatim.openstreetmap.org/search?format=json&countrycodes=id&limit=5&q=' +
+        encodeURIComponent(query);
+      const uri =
+        'https://nominatim.ppdbjatim.net/search?format=json&countrycodes=id&limit=5&q=' +
+        encodeURIComponent(query);
+      $.get(uri, function (data, status) {
+        sr.empty();
+        var str_ = '';
+        data.forEach((loc) => {
+          str_ +=
+            '<li><a href="#" lat="' +
+            loc.lat +
+            '" lon="' +
+            loc.lon +
+            '">' +
+            loc.display_name +
+            '</a></li><li role="separator" class="divider"></li>';
+        });
+        if (data.length == 0) {
+          str_ +=
+            '<li><p style="color: white;">Maaf, tidak ada hasil pencarian</p></li>';
+          sr.append(str_);
+        } else {
+          sr.append(str_);
+          sr.on('click', 'a', function (e) {
+            e.preventDefault();
+            const lat = $(e.target).attr('lat');
+            const lon = $(e.target).attr('lon');
+            $('#search-map').dropdown('toggle');
+            view.setCenter(ol.proj.fromLonLat([lon, lat]));
+            view.setZoom(15);
+          });
+        }
+      });
+    };
+    //# End of MAP SEARCH BAR PROCESSOR #
+
+    //# MAP BUTTON AND INPUT LISTENER #
+    $('#search-map input').on('keyup', function (e) {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        searchLocation($('#search-map input').first().val());
+      }
+    });
+    $('#search-btn').click(function (e) {
+      searchLocation($('#search-map input').first().val());
+    });
+    $('#pilihlokasi-btn').click(function () {
+      $('input#near-school').val(null);
+      const pt = ol.proj.toLonLat(map.getView().getCenter());
+      lon_elem.val(pt[0]);
+      lat_elem.val(pt[1]);
+      let provinsi_kk = $('select[name=provinsi_kk]').val();
+      if (provinsi_kk != '05_JAWA TIMUR') {
+        $('#lat').rules('remove', 'min max');
+        $('#lon').rules('remove', 'min max');
+      } else {
+        $('#lat').rules('add', {
+          required: true,
+          min: -8.76579,
+          max: -5.715736,
+        });
+        $('#lon').rules('add', {
+          required: true,
+          min: 110.899311,
+          max: 115.89345,
+        });
+      }
+      $('#info').html(
+        '<p>Lokasi Kamu di [Latitude:' +
+          pt[1] +
+          ' ,Longitude: ' +
+          pt[0] +
+          ']</p>' +
+          '<p>Bukan alamat kamu? <span class="btn btn-warning" id="ganti-lokasi" style="color:white;padding: 2 6;vertical-align: unset;">Ganti Lokasi</span></p><hr>'
+      );
+      FormAmbilLokasi_validator.form();
+      toggleMapActive();
+      $('#info #ganti-lokasi').on('click', function (e) {
+        $('#info').empty();
+        toggleMapActive();
+      });
+    });
+    //# END of MAP BUTTON AND INPUT LISTENER #
+
+    toggleMapActive();
+
+    $('#map').css('height', '200px');
+    $('#ambil-lokasi').click(function () {
+      $('input#near-school').val(null);
+      $('#map').css('height', '');
+      toggleMapActive();
+      cariLokasiKabKota();
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          // async
+          if (position.coords.accuracy <= 100) {
+            view.setCenter(
+              ol.proj.fromLonLat([
+                position.coords.longitude,
+                position.coords.latitude,
+              ])
+            );
+          }
+        });
+      }
+      $('#ambil-lokasi').parent().remove();
+    });
+
+    setLokasiPeta = function () {
+      view.setCenter(
+        ol.proj.fromLonLat([
+          lokasi_awal.lon,
+          lokasi_awal.lat, // taken from formwizard
+        ])
+      );
+    };
+  });
+</script>

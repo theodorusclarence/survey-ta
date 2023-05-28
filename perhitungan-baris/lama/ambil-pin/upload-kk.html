@@ -1,0 +1,1699 @@
+<div class="panel-heading panel-heading-custom">
+  <h3
+    class="tulisan-tebel font-putih"
+    style="font-size: 25pt"
+  >
+    Pengisian Data Kartu Keluarga
+  </h3>
+</div>
+<form
+  id="FormKK"
+  method="post"
+  action=""
+>
+  <div
+    class="panel-body"
+    style="padding: 20px 30px"
+  >
+    <div class="col-sm-12">
+      <div
+        class="alert alert-info text-center font-tipis"
+        style="margin-bottom: 10px"
+      >
+        <h4>Harap Mengisi Data Kartu Keluarga dengan Benar</h4>
+      </div>
+      <?php if ($this->session->flashdata('validation')) { ?>
+      <div class="alert alert-danger">
+        <p><?= $this->session->flashdata('validation') ?></p>
+      </div>
+      <?php } ?>
+    </div>
+    <input
+      type="hidden"
+      name="alur"
+      id="alur"
+    />
+    <div>
+      <div
+        class="alert alert-info text-center font-tipis"
+        style="padding: 0; margin-top: 12"
+      >
+        <h5>
+          Harap memilih opsi yang sesuai dengan kondisi Anda. Opsi yang Anda
+          pilih akan menentukan jalur pendaftaran yang dapat Anda ikuti
+        </h5>
+      </div>
+      <b>KK</b>
+      <ol>
+        <li>Jalur Afirmasi</li>
+        <li>Jalur Prestasi Hasil Lomba</li>
+        <li>Jalur Prestasi Nilai Akademik</li>
+        <li>Jalur Zonasi</li>
+        <li>Jalur Perpindahan Tugas Ortu/Wali (Tenaga Kesehatan)</li>
+        <li>Jalur Perpindahan Tugas Ortu/Wali (Tenaga Kependidikan)</li>
+      </ol>
+      <b>Domisili (Pindah Tugas Ortu/Wali)</b>
+      <ol>
+        <li>
+          Jalur Perpindahan Tugas Ortu/Wali (Non Tenaga Kesehatan/Non Tenaga
+          Kependidikan)
+        </li>
+        <li>Jalur Perpindahan Tugas Ortu/Wali (Tenaga Kesehatan)</li>
+        <li>Jalur Perpindahan Tugas Ortu/Wali (Tenaga Kependidikan)</li>
+      </ol>
+      <b> Domisili (Bencana Alam/Sosial/Ponpes/Panti) </b>
+      <ol>
+        <li>Jalur Afirmasi</li>
+        <li>Jalur Prestasi Hasil Lomba</li>
+        <li>Jalur Prestasi Nilai Akademik</li>
+        <li>Jalur Zonasi</li>
+      </ol>
+      <hr />
+      <h5 style="font-weight: 600">Kondisi</h5>
+      <label class="radio-inline">
+        <input
+          disabled
+          type="radio"
+          value="normal"
+          name="kondisi"
+        />KK
+      </label>
+      <!-- jika smp luar jatim maka tidak perlu opsi pindah tugas -->
+      <?php if (DATE_CURRENT_TIME < DATE_TUTUP_PENDAFTARAN_SEMIONLINE) { ?>
+      <label class="radio-inline">
+        <input
+          disabled
+          type="radio"
+          value="pindah tugas"
+          name="kondisi"
+        />Domisili (Pindah Tugas Ortu/Wali)
+      </label>
+      <?php } ?>
+      <label class="radio-inline">
+        <input
+          disabled
+          type="radio"
+          value="ponpes panti"
+          name="kondisi"
+        />Domisili (Ponpes/Panti)
+      </label>
+      <label class="radio-inline">
+        <input
+          disabled
+          type="radio"
+          value="bencana"
+          name="kondisi"
+        />Domisili (Bencana Alam/Sosial)
+      </label>
+      <div
+        class="alert alert-info text-center font-tipis"
+        style="padding: 0; margin-top: 12"
+        id="narasi-kondisi"
+      >
+        <h5>
+          Harap menulis mata pelajaran beserta semesternya yang tidak sesuai
+        </h5>
+      </div>
+    </div>
+    <div id="sk-bencana">
+      <label
+        >Unggah SK Bencana Alam / Bencana Sosial<span style="color: red"
+          >*</span
+        ></label
+      >
+      <div class="input-group">
+        <span
+          class="input-group-btn"
+          style="vertical-align: top"
+        >
+          <span
+            class="btn btn-default btn-file"
+            id="file-sk-bencana"
+            fileupload-result="#file-sk-bencana-result"
+          >
+            <!-- yg diubah: id, fileupload-result -->
+            Browse...
+          </span>
+        </span>
+        <div
+          id="filename"
+          class="form-control"
+          style="height: fit-content; z-index: 0"
+        >
+          Foto SK Bencana Alam / Bencana Sosial
+        </div>
+      </div>
+      <div>
+        <input
+          class="file-sk-bencana"
+          value=""
+          readonly
+          name="file_sk_bencana[]"
+          style="position: absolute; opacity: 0; height: 0"
+        />
+        <!-- yg diubah: class, name -->
+      </div>
+      <ul
+        class="fileupload-result"
+        id="file-sk-bencana-result"
+        style="margin-top: 12"
+      >
+        <!-- yg diubah: id -->
+        <!-- tempat hasil uploadan -->
+      </ul>
+      <hr />
+    </div>
+    <div id="sk-pondok-panti">
+      <label
+        >Unggah SK Pondok Pesantren / Panti Asuhan / Panti Sosial<span
+          style="color: red"
+          >*</span
+        ></label
+      >
+      <div class="input-group">
+        <span
+          class="input-group-btn"
+          style="vertical-align: top"
+        >
+          <span
+            class="btn btn-default btn-file"
+            id="file-sk-pondok-panti"
+            fileupload-result="#file-sk-pondok-panti-result"
+          >
+            <!-- yg diubah: id, fileupload-result -->
+            Browse...
+          </span>
+        </span>
+        <div
+          id="filename"
+          class="form-control"
+          style="height: fit-content; z-index: 0"
+        >
+          Foto SK Pondok Pesantren / Panti Asuhan / Panti Sosial
+        </div>
+      </div>
+      <div>
+        <input
+          class="file-sk-pondok-panti"
+          value=""
+          readonly
+          name="file_sk_pondok_panti[]"
+          style="position: absolute; opacity: 0; height: 0"
+        />
+        <!-- yg diubah: class, name -->
+      </div>
+      <ul
+        class="fileupload-result"
+        id="file-sk-pondok-panti-result"
+        style="margin-top: 12"
+      >
+        <!-- yg diubah: id -->
+        <!-- tempat hasil uploadan -->
+      </ul>
+      <hr />
+    </div>
+    <div id="kk">
+      <div class="toggle-container-kk">
+        <h4 style="display: inline-block; margin-right: 10px">
+          <b>Data Kartu Keluarga</b>
+        </h4>
+        <p style="display: inline-block; color: red; margin-bottom: 15px">
+          * wajib diisi
+        </p>
+      </div>
+      <div class="form-group">
+        <label>Provinsi <span style="color: red">*</span></label>
+        <select
+          name="provinsi_kk"
+          id="provinsi_kk"
+          class="form-control"
+          required
+        >
+          <option
+            value="05_JAWA TIMUR"
+            selected
+          >
+            JAWA TIMUR
+          </option>
+          <?php if (isset($all_provinsi)) {
+          foreach ($all_provinsi as $provinsi) { ?>
+          <option
+            value="<?= $provinsi->kode_provinsi ?>_<?= $provinsi->nama_provinsi ?>"
+          >
+            <?= $provinsi->nama_provinsi ?>
+          </option>
+          <?php }
+        } ?>
+        </select>
+      </div>
+      <div
+        class="form-group"
+        style="margin: 400px 0; width: 384px"
+      >
+        <label>Kabupaten/Kota <span style="color: red">*</span></label>
+        <select
+          disabled
+          readonly
+          name="kab_kota_kk"
+          id="kab_kota_kk"
+          class="form-control"
+          required
+        >
+          <option></option>
+          <?php if (isset($all_kab_kota)) {
+          foreach ($all_kab_kota as $kotakab) { ?>
+          <option
+            value="<?= $kotakab->kode_kota_kabupaten ?>_<?= $kotakab->nama_kota_kabupaten ?>"
+          >
+            <?= $kotakab->nama_kota_kabupaten ?>
+            <?php }
+        } ?>
+          </option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Kecamatan <span style="color: red">*</span></label>
+            <select
+              name="kecamatan_kk"
+              id="kecamatan_kk"
+              class="form-control"
+              required
+            >
+              <option></option>
+              <?php if (isset($all_kecamatan)) {
+              foreach ($all_kecamatan as $kecamatan) { ?>
+              <option
+                value="<?= $kecamatan->kode_kecamatan ?>_<?= $kecamatan->nama_kecamatan ?>"
+              >
+                <?= $kecamatan->nama_kecamatan ?>
+                <?php }
+            } ?>
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Desa/Kelurahan <span style="color: red">*</span></label>
+            <input
+              pattern="^([a-zA-Z]+\s)*[a-zA-Z]+$"
+              title="Hanya boleh alphabet"
+              type="text"
+              class="form-control"
+              id="kelurahan"
+              name="kelurahan"
+              value=""
+              required
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>NIK <span style="color: red">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              id="nik"
+              pattern="^\d{16}$"
+              title="NIK terdiri dari 16 angka"
+              name="nik"
+              required
+              value=""
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>No KK <span style="color: red">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              id="no_kk"
+              name="no_kk"
+              pattern="^\d{16}$"
+              title="Nomor KK terdiri dari 16 angka"
+              required
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>No HP/No WA/No Telepon <span style="color: red">*</span></label>
+        <div class="input-group">
+          <div class="input-group-addon"><i class="fa fa-phone-alt"></i></div>
+          <input
+            type="text"
+            placeholder="0822XXXXXXXX"
+            class="form-control"
+            id="no_telp"
+            title="Harus berupa 10-14 digit angka dengan format 08xxxxxxxxxxx"
+            name="no_telp"
+            required
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="form-group"
+        style="margin: 400px 0; width: 384px"
+      >
+        <label>Tanggal Penerbitan KK <span style="color: red">*</span></label>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-calendar"></i> </span>
+          <input
+            id="tanggal_berlaku_kk"
+            disabled
+            name="tanggal_berlaku_kk"
+            type="text"
+            class="form-control"
+            autocomplete="off"
+            pattern="\d{1,2}-\d{1,2}-\d{4}"
+            placeholder="hh-bb-tttt"
+            required
+            style="padding: 0px 9px"
+          />
+        </div>
+      </div>
+      <div
+        class="form-group"
+        id="sk-disdukcapil"
+      >
+        <label>Unggah Surat Keterangan<span style="color: red">*</span></label>
+        <div
+          class="alert alert-info text-center font-tipis"
+          style="padding: 0; margin-top: 12"
+        >
+          <!-- <h5>KK kurang dari satu tahun penerbitan. Harap mengunggah SK Disdukcapil / gunakan KK Lama.</h5> -->
+          <h5>
+            Untuk Kartu Keluarga Baru yang diterbitkan kurang dari 1 (satu)
+            tahun karena sesuatu hal, harus dilampiri Surat Keterangan yang
+            dikeluarkan oleh Ketua RT serta diketahui oleh Ketua RW dan Kepala
+            Desa/Lurah setempat sesuai dengan Kartu Keluarga Baru, dengan
+            disertai penjelasan alasan perubahan Kartu Keluarga. Atau bisa
+            diganti dengan foto kartu keluarga lama.
+          </h5>
+        </div>
+        <!-- <p>Contoh Surat Pernyataan: <a href="https://static.ppdbjatim.net/file/SURAT-PERNYATAAN-KK.pdf" target="_blank" class="btn btn-info"  style="color:white;padding: 2 6;vertical-align: unset;">Unduh</a></p> -->
+        <div class="input-group">
+          <span
+            class="input-group-btn"
+            style="vertical-align: top"
+          >
+            <span
+              class="btn btn-default btn-file"
+              id="file-sk-disdukcapil"
+              fileupload-result="#file-sk-disdukcapil-result"
+            >
+              <!-- yg diubah: id, fileupload-result -->
+              Browse...
+            </span>
+          </span>
+          <div
+            id="filename"
+            class="form-control"
+            style="height: fit-content; z-index: 0"
+          >
+            Foto Surat Keterangan/Kartu Keluarga Lama
+          </div>
+        </div>
+        <div>
+          <input
+            class="file-sk-disdukcapil"
+            value=""
+            readonly
+            name="file_sk_disdukcapil[]"
+            style="position: absolute; opacity: 0; height: 0"
+          />
+          <!-- yg diubah: class, name -->
+        </div>
+        <ul
+          class="fileupload-result"
+          id="file-sk-disdukcapil-result"
+          style="margin-top: 12"
+        >
+          <!-- yg diubah: id -->
+          <!-- tempat hasil uploadan -->
+        </ul>
+        <hr />
+      </div>
+      <div
+        class="form-group"
+        style="width: 384px; margin: 400px 0"
+      >
+        <label>Alamat Rumah sesuai KK <span style="color: red">*</span></label>
+        <textarea
+          class="form-control"
+          id="alamat"
+          name="alamat"
+          rows="3"
+          required
+        ></textarea>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>RT</label>
+            <input
+              type="number"
+              class="form-control"
+              title="RT harus lebih dari 0"
+              id="rt"
+              min="1"
+              name="rt"
+              value=""
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>RW</label>
+            <input
+              type="number"
+              class="form-control"
+              id="rw"
+              title="RW harus lebih dari 0"
+              min="1"
+              name="rw"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="form-group"
+        style="margin: 400px 0; width: 384px"
+      >
+        <label>Unggah Kartu Keluarga <span style="color: red">*</span></label>
+        <div class="input-group">
+          <span
+            class="input-group-btn"
+            style="vertical-align: top"
+          >
+            <span
+              class="btn btn-default btn-file"
+              id="file-kk"
+              fileupload-result="#file-kk-result"
+            >
+              Browse...
+            </span>
+          </span>
+          <div
+            id="filename"
+            class="form-control"
+            style="height: fit-content; z-index: 0"
+          >
+            Foto Kartu Keluarga
+          </div>
+        </div>
+        <div>
+          <input
+            class="file-kk"
+            value=""
+            readonly
+            name="file_kk[]"
+            style="position: absolute; opacity: 0; height: 0"
+          />
+        </div>
+        <ul
+          class="fileupload-result"
+          id="file-kk-result"
+          style="margin-top: 12"
+        ></ul>
+      </div>
+      <hr />
+    </div>
+    <div class="no-checkedselector">
+      <div class="toggle-container">
+        <h4 style="display: inline-block; margin-right: 10px">
+          <b>Data Surat Domisili</b>
+        </h4>
+        <p style="display: inline-block; color: red; margin-bottom: 15px">
+          * wajib diisi
+        </p>
+      </div>
+    </div>
+    <div
+      class="alert alert-warning text-center font-tipis"
+      style="margin-bottom: 30px; padding: 8px"
+    >
+      <h5 style="font-weight: 600">
+        Apakah Alamat Tempat Tinggal Anda bukan dengan Alamat KK?
+      </h5>
+      <label class="radio-inline">
+        <input
+          type="radio"
+          value="0"
+          name="is_domisili"
+          checked
+        />Tidak
+      </label>
+      <label class="radio-inline">
+        <input
+          type="radio"
+          value="1"
+          name="is_domisili"
+        />Ya
+      </label>
+    </div>
+
+    <div id="skd">
+      <div class="toggle-container-kk">
+        <h4 style="display: inline-block; margin-right: 10px">
+          <b>Data SK Domisili</b>
+        </h4>
+        <p style="display: inline-block; color: red; margin-bottom: 15px">
+          * wajib diisi
+        </p>
+      </div>
+      <div class="form-group">
+        <label>Kabupaten/Kota <span style="color: red">*</span></label>
+        <select
+          name="kab_kota_skd"
+          id="kab_kota_skd"
+          class="form-control"
+          required
+        >
+          <option></option>
+          <?php if (isset($all_kab_kota)) {
+          foreach ($all_kab_kota as $kotakab) { ?>
+          <option
+            value="<?= $kotakab->kode_kota_kabupaten ?>_<?= $kotakab->nama_kota_kabupaten ?>"
+          >
+            <?= $kotakab->nama_kota_kabupaten ?>
+            <?php }
+        } ?>
+          </option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Kecamatan <span style="color: red">*</span></label>
+            <select
+              name="kecamatan_skd"
+              id="kecamatan_skd"
+              class="form-control"
+              required
+            >
+              <option></option>
+              <?php if (isset($all_kecamatan)) {
+              foreach ($all_kecamatan as $kecamatan) { ?>
+              <option
+                value="<?= $kecamatan->kode_kecamatan ?>_<?= $kecamatan->nama_kecamatan ?>"
+              >
+                <?= $kecamatan->nama_kecamatan ?>
+                <?php }
+            } ?>
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Desa/Kelurahan <span style="color: red">*</span></label>
+            <input
+              pattern="^([a-zA-Z]+\s)*[a-zA-Z]+$"
+              title="Hanya boleh alphabet"
+              type="text"
+              class="form-control"
+              id="kelurahan_skd"
+              name="kelurahan_skd"
+              required
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>NIK <span style="color: red">*</span></label>
+        <input
+          type="text"
+          class="form-control"
+          id="nik2"
+          pattern="^\d{16}$"
+          title="NIK terdiri dari 16 angka"
+          name="nik"
+          required
+          value=""
+        />
+      </div>
+      <div class="form-group">
+        <label>No HP/No WA/No Telepon <span style="color: red">*</span></label>
+        <div class="input-group">
+          <div class="input-group-addon"><i class="fa fa-phone-alt"></i></div>
+          <input
+            type="text"
+            placeholder="0822XXXXXXXX"
+            class="form-control"
+            title="Harus berupa 10-14 digit angka"
+            id="no_telp"
+            name="no_telp"
+            required
+            value=""
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <label
+          >Tanggal Penerbitan Surat Domisili
+          <span style="color: red">*</span></label
+        >
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-calendar"></i> </span>
+          <input
+            id="tanggal_berlaku_skd"
+            name="tanggal_berlaku_skd"
+            type="text"
+            class="form-control"
+            autocomplete="off"
+            pattern="\d{1,2}-\d{1,2}-\d{4}"
+            placeholder="hh-bb-tttt"
+            required
+            style="padding: 0px 9px"
+          />
+        </div>
+      </div>
+      <label>Lama Tinggal Domisili <span style="color: red">*</span></label>
+      <div class="form-group">
+        <div class="funkyradio">
+          <div class="funkyradio-primary">
+            <input
+              type="radio"
+              name="lama_tahun_skd"
+              id="kurang"
+              value="-1"
+              required
+            />
+            <label for="kurang">Kurang dari setahun</label>
+          </div>
+        </div>
+        <div class="funkyradio">
+          <div class="funkyradio-primary">
+            <input
+              type="radio"
+              name="lama_tahun_skd"
+              id="lebih"
+              value="1"
+              required
+            />
+            <label for="lebih">Lebih dari setahun</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label
+          >Alamat Rumah sesuai Kartu Domisili
+          <span style="color: red">*</span></label
+        >
+        <textarea
+          class="form-control"
+          id="alamat_skd"
+          name="alamat_skd"
+          rows="3"
+          required
+        ></textarea>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>RT</label>
+            <input
+              type="number"
+              class="form-control"
+              id="rt_skd"
+              title="RT harus lebih dari 0"
+              min="1"
+              name="rt_skd"
+              value=""
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>RW</label>
+            <input
+              type="number"
+              class="form-control"
+              id="rw_skd"
+              min="1"
+              title="RW harus lebih dari 0"
+              name="rw_skd"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Unggah Surat Domisili <span style="color: red">*</span></label>
+        <div
+          class="alert alert-warning text-center font-tipis"
+          style="margin-bottom: 30px"
+        >
+          <h4>Ekstensi Berkas Foto yang Diperbolehkan (.jpg, .jpeg, .png)</h4>
+          <h4>Ukuran Minimum Berkas Foto yang Diperbolehkan (200 KB)</h4>
+          <h4>
+            Dimensi Panjang Minimum Berkas Foto yang Diperbolehkan (600 piksel)
+          </h4>
+          <h4>
+            Jika Ukuran Berkas yang diunggah Melebihi (400 KB), Sistem akan
+            Otomatis Melakukan Penyesuaian Ukuran
+          </h4>
+        </div>
+        <div class="input-group">
+          <span
+            class="input-group-btn"
+            style="vertical-align: top"
+          >
+            <span
+              class="btn btn-default btn-file"
+              id="file-skd"
+              fileupload-result="#file-skd-result"
+            >
+              <!-- yg diubah: id, fileupload-result -->
+              Browse...
+            </span>
+          </span>
+          <div
+            id="filename"
+            class="form-control"
+            style="height: fit-content; z-index: 0"
+          >
+            Foto Surat Keterangan Domisili
+          </div>
+        </div>
+        <div>
+          <input
+            class="file-skd"
+            value=""
+            readonly
+            name="file_skd[]"
+            style="position: absolute; opacity: 0; height: 0"
+          />
+          <!-- yg diubah: class, name -->
+        </div>
+        <ul
+          class="fileupload-result"
+          id="file-skd-result"
+          style="margin-top: 12"
+        >
+          <!-- yg diubah: id -->
+          <!-- tempat hasil uploadan -->
+        </ul>
+      </div>
+      <hr />
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('input[name^=tanggal]').datepicker({
+      defaultDate: new Date(0000, 0, 0),
+      minDate: new Date(1999, 6, 12),
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd-mm-yy',
+      currentText: '00-00-0000',
+      assumeNearbyYear: 20,
+      yearRange: '2000:2022',
+    });
+
+    const kk_form = $('#kk');
+    const skd_form = $('#skd');
+    const sk_bencana = $('#sk-bencana');
+    const sk_pondok_panti = $('#sk-pondok-panti');
+    const sk_disdukcapil = $('#sk-disdukcapil');
+    sk_disdukcapil.css({ display: 'none' });
+    sk_disdukcapil.find(' :input').prop('disabled', true);
+
+    const narasi_kondisi = $('#narasi-kondisi');
+    const kondisi_selector = $('input[name=kondisi]');
+
+    kondisi_selector.on('change', function (e) {
+      const val = $(this).val();
+      sk_bencana.css({ display: 'none' });
+      sk_pondok_panti.css({ display: 'none' });
+      sk_bencana.find(' :input').prop('disabled', true);
+      sk_pondok_panti.find(' :input').prop('disabled', true);
+
+      if (val == 'normal') {
+        kk_form.css({ display: '' });
+        skd_form.css({ display: 'none' });
+        narasi_kondisi.css({ display: 'none' });
+
+        kk_form.find(' :input').prop('disabled', false);
+        skd_form.find(' :input').prop('disabled', true);
+        narasi_kondisi.find(' :input').prop('disabled', true);
+      } else {
+        narasi_kondisi.css({ display: '' });
+        skd_form.css({ display: '' });
+        kk_form.css({ display: 'none' });
+
+        narasi_kondisi.find(' :input').prop('disabled', false);
+        skd_form.find(' :input').prop('disabled', false);
+        kk_form.find(' :input').prop('disabled', true);
+
+        if (val == 'pindah tugas') {
+          narasi_kondisi.html(
+            '<h5>Hanya bisa mendaftar jalur pindah tugas saja saat pendaftaran.</h5>'
+          );
+          // do something
+        } else if (val == 'ponpes panti') {
+          narasi_kondisi.html(
+            '<h5>Untuk siswa yang bertempat tinggal di asrama pondok pesantren / panti asuhan / panti sosial.</h5>'
+          );
+          sk_pondok_panti.css({ display: '' });
+          sk_pondok_panti.find(' :input').prop('disabled', false);
+        } else if (val == 'bencana') {
+          narasi_kondisi.html(
+            '<h5>Untuk siswa yang terdampak bencana alam / bencana sosial.</h5>'
+          );
+          sk_bencana.css({ display: '' });
+          sk_bencana.find(' :input').prop('disabled', false);
+        }
+      }
+    });
+    $('input[name=kondisi][value=normal]').trigger('change');
+
+    // To calculate the no. of days between two dates
+    var date_diff_indays = function (date1, date2) {
+      dt1 = new Date(date1);
+      dt2 = new Date(date2);
+      return Math.floor(
+        (Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) -
+          Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) /
+          (1000 * 60 * 60 * 24)
+      );
+    };
+
+    $('#tanggal_berlaku_kk').on('change', function (e) {
+      if ($(this).parent().hasClass('has-error')) {
+        sk_disdukcapil.css({ display: 'none' });
+        sk_disdukcapil.find(' :input').prop('disabled', true);
+        return;
+      }
+      var val = $(this).val();
+      var interval = date_diff_indays(
+        val.replace(/(\d{2})-(\d{2})-(\d{4})/, '$2/$1/$3'),
+        '06/20/2022'
+      );
+      console.log(interval);
+      if (interval && interval < 365) {
+        sk_disdukcapil.css({ display: '' });
+        sk_disdukcapil.find(' :input').prop('disabled', false);
+      } else {
+        sk_disdukcapil.css({ display: 'none' });
+        sk_disdukcapil.find(' :input').val('');
+        sk_disdukcapil.find(' :input').prop('disabled', true);
+      }
+    });
+
+    //# UPLOAD WIZARD TRIGGER #
+    //# UPLOAD KK
+    new CustomUploadWizard(
+      $('#file-kk'),
+      $('#fileupload'),
+      {
+        min: 1,
+        max: 1,
+        name: 'KK',
+        target_name: 'file_kk',
+        target_class: 'file-kk',
+      },
+      [
+        { name: 'tipe_berkas', value: 'foto_kk' },
+        { name: 'smp_uasbn', value: '<?= $smp_uasbn ?>' },
+      ],
+      '<h5>Harap mengunggah file berupa gambar jernih (.jpeg/.jpg/.png) dengan ukuran minimum 100 KB dan maksimum 400 KB</h5>'
+    );
+
+    //# UPLOAD SKD
+    new CustomUploadWizard(
+      $('#file-skd'),
+      $('#fileupload'),
+      {
+        min: 1,
+        max: 1,
+        name: 'SK Domisili',
+        target_name: 'file_skd',
+        target_class: 'file-skd',
+      },
+      [
+        { name: 'tipe_berkas', value: 'foto_surat_domisili' },
+        { name: 'smp_uasbn', value: '<?= $smp_uasbn ?>' },
+      ],
+      '<h5>Harap mengunggah file berupa gambar jernih (.jpeg/.jpg/.png) dengan ukuran minimum 100 KB dan maksimum 400 KB</h5>'
+    );
+
+    //# UPLOAD SK DISDUKCAPIL
+    new CustomUploadWizard(
+      $('#file-sk-disdukcapil'),
+      $('#fileupload'),
+      {
+        min: 1,
+        max: 1,
+        name: 'SK Kartu Keluarga',
+        target_name: 'file_sk_disdukcapil',
+        target_class: 'file-sk-disdukcapil',
+      },
+      [
+        { name: 'tipe_berkas', value: 'sk_disdukcapil' },
+        { name: 'smp_uasbn', value: '<?= $smp_uasbn ?>' },
+      ],
+      '<h5>Harap mengunggah file berupa gambar jernih (.jpeg/.jpg/.png) dengan ukuran minimum 100 KB dan maksimum 400 KB</h5>'
+    );
+
+    //# UPLOAD SK BENCANA
+    new CustomUploadWizard(
+      $('#file-sk-bencana'),
+      $('#fileupload'),
+      {
+        min: 1,
+        max: 1,
+        name: 'SK Bencana',
+        target_name: 'file_sk_bencana',
+        target_class: 'file-sk-bencana',
+      },
+      [
+        { name: 'tipe_berkas', value: 'sk_bencana' },
+        { name: 'smp_uasbn', value: '<?= $smp_uasbn ?>' },
+      ],
+      '<h5>Harap mengunggah file berupa gambar jernih (.jpeg/.jpg/.png) dengan ukuran minimum 100 KB dan maksimum 400 KB</h5>'
+    );
+
+    //# UPLOAD SK PONDOK/PANTI
+    new CustomUploadWizard(
+      $('#file-sk-pondok-panti'),
+      $('#fileupload'),
+      {
+        min: 1,
+        max: 1,
+        name: 'SK Pondok/Panti',
+        target_name: 'file_sk_pondok_panti',
+        target_class: 'file-sk-pondok-panti',
+      },
+      [
+        { name: 'tipe_berkas', value: 'sk_pondok_panti' },
+        { name: 'smp_uasbn', value: '<?= $smp_uasbn ?>' },
+      ],
+      '<h5>Harap mengunggah file berupa gambar jernih (.jpeg/.jpg/.png) dengan ukuran minimum 100 KB dan maksimum 400 KB</h5>'
+    );
+    //# END of UPLOAD WIZARD TRIGGER #
+
+    //# FORM DOMISILI #
+    $('#skd').css({ display: 'none' });
+    $('#skd input, #skd textarea, #skd select').prop('disabled', true);
+    $("input[name='is_domisili']").change(function () {
+      selected_value = $("input[name='is_domisili']:checked").val();
+      if (selected_value === '1') {
+        $('#skd input, #skd textarea, #skd select').prop('disabled', false);
+        $('#skd').css({ display: 'block' });
+      } else {
+        $('#skd').css({ display: 'none' });
+        $('#skd input, #skd textarea, #skd select').prop('disabled', true);
+      }
+    });
+    //# END of FORM DOMISILI #
+
+    allowed_kota = [40, 41, 42, 43, 44, 45, 46, 47];
+    $.validator.methods.AllowedKodeKota = function (value, element) {
+      var kode_kota_ = Number(value.split('_')[0].replace(/^0\s?/gi, ''));
+      return (
+        this.optional(element) ||
+        kode_kota_ <= 38 ||
+        allowed_kota.includes(kode_kota_)
+      );
+    };
+    $.validator.methods.phoneINA = function (value, element) {
+      return (
+        this.optional(element) ||
+        /^(^\+62\s?|^0)(\d{3,4}-?){2}\d{3,4}$/.test(value)
+      );
+    };
+    $.validator.methods.dateAfter = function (value, element) {
+      return (
+        this.optional(element) ||
+        date_diff_indays(
+          '12/06/1999',
+          value.replace(/(\d{2})-(\d{2})-(\d{4})/, '$2/$1/$3')
+        ) > 0
+      );
+    };
+    var FormKK_validator = $('#FormKK').validate({
+      rules: {
+        no_kk: {
+          rangelength: [16, 16],
+          digits: true,
+        },
+        nik: {
+          rangelength: [16, 16],
+          digits: true,
+        },
+        no_telp: {
+          phoneINA: true,
+        },
+        'file_kk[]': {
+          require_from_group: [1, '.file-kk'],
+        },
+        'file_skd[]': {
+          require_from_group: [1, '.file-skd'],
+        },
+        'file_sk_disdukcapil[]': {
+          require_from_group: [1, '.file-sk-disdukcapil'],
+        },
+        'file_sk_bencana[]': {
+          require_from_group: [1, '.file-sk-bencana'],
+        },
+        'file_sk_pondok_panti[]': {
+          require_from_group: [1, '.file-sk-pondok-panti'],
+        },
+        tanggal_berlaku_kk: {
+          dateAfter: true,
+        },
+        kab_kota_kk: {
+          AllowedKodeKota: true,
+        },
+        kab_kota_skd: {
+          AllowedKodeKota: true,
+        },
+        alamat: {
+          alphanumeric: true,
+          maxlength: 127,
+        },
+        alamat_skd: {
+          alphanumeric: true,
+          maxlength: 127,
+        },
+      },
+      messages: {
+        kab_kota_sklh_asal: {
+          required: '* Silahkan pilih kota asal sekolah',
+        },
+        sekolah_asal: {
+          required: '* Silahkan pilih asal sekolah',
+        },
+        no_skl:
+          '* Karakter yang diperbolehkan adalah huruf kapital, angka, "." , "/" , "-"',
+        'file_kk[]': '* Belum melakukan unggah KK',
+        'file_skd[]': '* Belum melakukan unggah SK Domisili',
+        'file_sk_disdukcapil[]': '* Belum melakukan unggah SK Disdukcapil',
+        'file_sk_bencana[]': '* Belum melakukan unggah SK Bencana',
+        'file_sk_pondok_panti[]': '* Belum melakukan unggah SK Ponpes/Panti',
+        tanggal_berlaku_kk: {
+          dateAfter: '* Tanggal penerbitan belum diganti',
+        },
+        kab_kota_kk: {
+          AllowedKodeKota:
+            '* Kota Harus berada atau beririsan dengan Jawa Timur',
+        },
+        kab_kota_skd: {
+          AllowedKodeKota:
+            '* Kota Harus berada atau beririsan dengan Jawa Timur',
+        },
+        alamat: {
+          maxlength: '* maksimal 127 huruf',
+        },
+        alamat_skd: {
+          maxlength: '* maksimal 127 huruf',
+        },
+      },
+      success: function (label) {
+        label.detach();
+      },
+      errorElement: 'em',
+      errorPlacement: function (error, element) {
+        // Add the `help-block` class to the error element
+        error.addClass('help-block');
+
+        if (element.prop('type') === 'checkbox') {
+          error.insertAfter(element.parent('label'));
+        } else {
+          element.closest('.form-group').append(error);
+          // error.insertAfter( element );
+        }
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).parent().addClass('has-error').removeClass('has-success');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).parent().removeClass('has-error');
+      },
+    });
+
+    fw_fv.push(FormKK_validator);
+
+    // ALL SELECT2 PROVINSI, KAB KOTA, KECAMATAN
+    $.fn.select2.defaults.set('theme', 'bootstrap');
+    $.fn.select2.defaults.set('width', '100%');
+    $('#provinsi_kk').select2({
+      placeholder: 'Pilih Provinsi KK',
+    });
+    $('#kab_kota_kk').select2({
+      placeholder: 'Pilih Kabupaten/Kota KK',
+    });
+    $('#kecamatan_kk').select2({
+      placeholder: 'Pilih Kecamatan KK',
+    });
+    $('#kab_kota_skd').select2({
+      placeholder: 'Pilih Kabupaten/Kota Domisili',
+    });
+    $('#kecamatan_skd').select2({
+      placeholder: 'Pilih Kecamatan Domisili',
+    });
+
+    $('#provinsi_kk').change(function () {
+      // jika ganti Provinsi KK, reset Kabkota KK dan kecamatan KK
+      if ($('#kecamatan_kk').prop('tagName') === 'SELECT') {
+        $('#kecamatan_kk option').remove();
+        var target_elem = $('#kecamatan_kk');
+        target_elem.select2('destroy');
+        target_elem.append('<option></option>');
+        $('#kecamatan_kk').select2({
+          placeholder: 'Pilih Kecamatan KK',
+        });
+      }
+      const optionsCreator = function (obj) {
+        obj.id = obj.kode_kota_kabupaten + '_' + obj.nama_kota_kabupaten;
+        obj.text = obj.nama_kota_kabupaten;
+        return obj;
+      };
+      const url = "<?php echo base_url('pin/getKabKota'); ?>";
+      const mydata = { provinsi: $(this).val().split('_')[0] };
+      targetSelect2Loading(
+        '#kab_kota_kk',
+        'Pilih Kabupaten/Kota KK',
+        url,
+        mydata,
+        optionsCreator
+      );
+    });
+
+    $('#kab_kota_kk').change(function () {
+      // jika ganti kota KK, reset kecamatan KK dengan select2/Input Biasa
+      const isJatim = $('#provinsi_kk').val() === '05_JAWA TIMUR';
+      const parent_ = $('#kecamatan_kk').parent();
+
+      if ($('#kecamatan_kk').prop('tagName') !== 'SELECT' && isJatim) {
+        // jika Sebelumnya bukan select2, maka bikin select2 dummy
+        $('#kecamatan_kk').remove();
+        parent_.append(
+          '<select name="kecamatan_kk" id="kecamatan_kk" class="form-control" required></select>'
+        );
+        $('#kecamatan_kk').select2();
+      } else if ($('#kecamatan_kk').prop('tagName') === 'SELECT' && !isJatim) {
+        // jika Sebelumnya select2, maka select2 di destroy dulu
+        $('#kecamatan_kk').select2('destroy');
+      }
+
+      if (isJatim) {
+        // jika di provinsi jatim gunakan select2 untuk pilih kecamatan
+        const optionsCreator = function (obj) {
+          obj.id = obj.kode_kecamatan + '_' + obj.nama_kecamatan;
+          obj.text = obj.nama_kecamatan;
+          return obj;
+        };
+        const url = "<?php echo base_url('pin/getKecamatan'); ?>";
+        const mydata = { kab_kota: $(this).val().split('_')[0] };
+        targetSelect2Loading(
+          '#kecamatan_kk',
+          'Pilih Kecamatan KK',
+          url,
+          mydata,
+          optionsCreator,
+          'GET'
+        );
+      } else {
+        // jika di Luar provinsi jatim gunakan input biasa untuk pilih kecamatan
+        $('#kecamatan_kk').remove();
+        parent_.append(
+          '<input name="kecamatan_kk" id="kecamatan_kk" class="form-control" required />'
+        );
+      }
+    });
+
+    $('#kab_kota_skd').change(function () {
+      // jika ganti kota Domisili, reset kecamatan Domisili dengan select2
+      const optionsCreator = function (obj) {
+        obj.id = obj.kode_kecamatan + '_' + obj.nama_kecamatan;
+        obj.text = obj.nama_kecamatan;
+        return obj;
+      };
+      const url = "<?php echo base_url('pin/getKecamatan'); ?>";
+      const mydata = { kab_kota: $(this).val().split('_')[0] };
+      targetSelect2Loading(
+        '#kecamatan_skd',
+        'Pilih Kecamatan Domisili',
+        url,
+        mydata,
+        optionsCreator,
+        'GET'
+      );
+    });
+    // END of ALL SELECT2 PROVINSI, KAB KOTA, KECAMATAN
+  });
+</script>
+<div class="panel-heading panel-heading-custom">
+  <h3
+    class="tulisan-tebel font-putih"
+    style="font-size: 25pt"
+  >
+    Pilih Lokasi Rumah
+  </h3>
+</div>
+<?php if (
+  isset($datadiri["__URGENT_ambil_lokasi"]) and
+  $datadiri["data_ambilpin"]->smp_status_berkas != -1 ) { if
+($datadiri["data_ambilpin"]->smp_alur <= 3) { } else { } } ?>
+<div
+  class="panel-body"
+  style="padding: 20px 30px"
+>
+  <div>
+    <div
+      class="alert alert-info text-center font-tipis"
+      style="margin-bottom: 10px"
+    >
+      <h4>
+        Harap menentukan lokasi rumah Anda berdasarkan Kartu Keluarga atau Surat
+        Domisili
+      </h4>
+      <h4>
+        Jika mengisi data Surat Domisili pada langkah sebelumnya maka tentukan
+        lokasi berdasarkan Surat Domisili
+      </h4>
+    </div>
+  </div>
+  <form
+    id="FormAmbilLokasi"
+    method="post"
+    action=""
+  >
+    <div class="form-group no-margin-all">
+      <label
+        ><input
+          class="fake-hidden"
+          type="number"
+          name="lat"
+          id="lat"
+          readonly
+          required
+      /></label>
+    </div>
+    <div class="form-group no-margin-all">
+      <label
+        ><input
+          class="fake-hidden"
+          type="number"
+          name="lon"
+          id="lon"
+          readonly
+          required
+      /></label>
+    </div>
+    <div class="form-group no-margin-all">
+      <label
+        ><input
+          class="fake-hidden"
+          type="number"
+          name="near-school"
+          id="near-school"
+          readonly
+      /></label>
+    </div>
+    <div class="form-group no-margin-all">
+      <label
+        ><input
+          class="fake-hidden"
+          type="text"
+          name="near-school-npsn"
+          id="near-school-npsn"
+          readonly
+      /></label>
+    </div>
+    <div class="form-group no-margin-all">
+      <label
+        ><input
+          class="fake-hidden"
+          type="number"
+          name="near-school-jarak"
+          id="near-school-jarak"
+          readonly
+      /></label>
+    </div>
+  </form>
+  <div style="position: relative">
+    <div
+      class="input-group"
+      id="search-map"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Cari Alamat ..."
+      />
+      <span class="input-group-btn">
+        <button
+          class="btn btn-default"
+          id="search-btn"
+          type="button"
+        >
+          <span class="fa fa-search"></span>
+        </button>
+      </span>
+    </div>
+    <ul
+      class="dropdown-menu"
+      aria-labelledby="search-map"
+      style="top: 35px; left: 45px; width: 226"
+      id="search-result"
+    ></ul>
+  </div>
+  <div
+    class="map-container"
+    style="position: relative"
+  >
+    <div
+      class="map"
+      id="map"
+      style=""
+    ></div>
+    <div
+      class="center"
+      id="map-marker"
+    >
+      <button
+        class="btn btn-primary"
+        style="color: white; margin-bottom: 12"
+        id="pilihlokasi-btn"
+      >
+        Pilih Lokasi
+      </button>
+      <img
+        class="img-no-drag"
+        src="<?= URL_STATIC ?>img/marker.png"
+        alt=""
+      />
+    </div>
+    <div class="avoiding-layer">
+      <button
+        class="btn btn-primary"
+        style="color: #fff"
+        id="ambil-lokasi"
+      >
+        Ambil Lokasi
+      </button>
+    </div>
+  </div>
+  <div id="info"></div>
+  <div>
+    <p>Panduan Penitikan Lokasi</p>
+    <ol
+      class="nice-ol"
+      type="1"
+    >
+      <li>Klik tombol <b>"ambil lokasi"</b> yang terdapat pada tengah peta</li>
+      <li>
+        Ketikkan alamat lengkap tanpa nomor rumah pada kotak pencarian
+        <b>"cari alamat"</b>
+      </li>
+      <li>
+        Setelah hasil pencarian alamat ditampilkan, pilih alamat yang sesuai
+      </li>
+      <li>
+        Jika peta rumah sudah d tampilkan, untuk memperjelas titik lokasi maka
+        zoom in pada peta dengan menekan tombol <b>"+"</b> pada pojok kiri atas
+        peta
+      </li>
+      <li>
+        Gerakkan peta (Jika menggunakan smartphone maka gulirkan layar ke
+        kanan/ke kiri/ke atas/ke bawah, namun jika menggunakan PC/Laptop dengan
+        cara klik kiri <b>kemudian tahan</b> disertai menggulirkan ke kanan/ke
+        kiri/ke atas/ke bawah) sampai pointer peta berada pada lokasi yang
+        dituju
+      </li>
+      <li>
+        Jika pointer peta sudah sesuai maka tekan tombol <b>"Pilih Lokasi"</b>
+      </li>
+      <li>
+        Jika ingin mengubah maka tekan tombol <b>"ganti lokasi"</b>, ulangi
+        mulai langkah poin 2
+      </li>
+      <li>
+        Jika sudah yakin bahwa lokasi titik sudah tepat, silahkan tekan tombol
+        <b>"Selesai"</b>
+      </li>
+    </ol>
+  </div>
+</div>
+<script>
+  var map, layer;
+  var lat_elem;
+  var lon_elem;
+  var mapActivated = true;
+  var mouseWheel = new ol.interaction.MouseWheelZoom({ useAnchor: false }); //zoom scroll mouse tetap ditengah
+  //# MAP INTERACTIONS PROPERTIES #
+  var interactions = ol.interaction
+    .defaults({
+      altShiftDragRotate: false,
+      shiftDragZoom: false,
+      pinchRotate: false,
+      mouseWheelZoom: true,
+      pinchZoom: true,
+    })
+    .extend([mouseWheel]);
+
+  var interactions_disabled = ol.interaction.defaults({
+    altShiftDragRotate: false,
+    shiftDragZoom: false,
+    pinchRotate: false,
+    mouseWheelZoom: false,
+    pinchZoom: false,
+    dragPan: false,
+    keyboard: false,
+    doubleClickZoom: false,
+  });
+  //# End of MAP INTERACTIONS PROPERTIES #
+
+  function toggleMapActive() {
+    if (mapActivated) {
+      map.interactions = interactions_disabled;
+      $('#search-map').parent().css('display', 'none');
+      $('#pilihlokasi-btn').css('display', 'none');
+    } else {
+      map.interactions = interactions;
+      $('#search-map').parent().css('display', '');
+      $('#pilihlokasi-btn').css('display', '');
+      map.updateSize();
+      lat_elem.val('');
+      lon_elem.val('');
+    }
+    mapActivated = !mapActivated;
+  }
+  $(document).ready(function () {
+    lat_elem = $('#lat');
+    lon_elem = $('#lon');
+    var FormAmbilLokasi_validator = $('#FormAmbilLokasi').validate({
+      rules: {},
+      messages: {
+        lat: {
+          required: '* belum menentukan titik Lokasi',
+          min: '* koordinat tidak valid',
+          max: '* koordinat tidak valid',
+        },
+        lon: {
+          required: '* belum menentukan titik Lokasi',
+          min: '* koordinat tidak valid',
+          max: '* koordinat tidak valid',
+        },
+      },
+      success: function (label) {
+        label.detach();
+      },
+      errorElement: 'em',
+      errorPlacement: function (error, element) {
+        // Add the `help-block` class to the error element
+        error.addClass('help-block');
+
+        if (element.prop('type') === 'checkbox') {
+          error.insertAfter(element.parent('label'));
+        } else {
+          element.closest('.form-group').append(error);
+          // error.insertAfter( element );
+        }
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).parent().addClass('has-error').removeClass('has-success');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).parent().removeClass('has-error');
+      },
+    });
+
+    fw_fv.push(FormAmbilLokasi_validator);
+
+    //# BUILD MAP #
+    var source = new ol.source.OSM();
+    layer = new ol.layer.Tile({
+      source: source,
+    });
+    var overviewMapControl = new ol.control.OverviewMap({
+      layers: [layer],
+    });
+
+    var view = new ol.View({
+      center: ol.proj.fromLonLat([
+        lokasi_awal.lon,
+        lokasi_awal.lat, // taken from formwizard
+      ]),
+      zoom: 10,
+      minZoom: 10,
+      maxZoom: 19,
+    });
+
+    map = new ol.Map({
+      controls: ol.control.defaults().extend([overviewMapControl]),
+      interactions: interactions,
+      layers: [layer],
+      target: 'map',
+      view: view,
+    });
+    //# END of BUILD MAP #
+
+    //# MAP SEARCH BAR PROCESSOR #
+    const searchLocation = function (query) {
+      if ($('#search-map').attr('aria-expanded') === 'false') {
+        $('#search-map').dropdown('toggle');
+      }
+      var sr = $('#search-result');
+      sr.empty();
+      sr.append(
+        '<li><button class="btn" style="color: white;background-color: unset;" disabled><i class="fa fa-spinner fa-spin"></i> Loading</button></li>'
+      );
+      query = query.trim();
+      if (query === '') return;
+      // const uri = 'https://nominatim.openstreetmap.org/search?format=json&countrycodes=id&limit=5&q='+encodeURIComponent(query);
+      const uri =
+        'https://nominatim.ppdbjatim.net/search?format=json&countrycodes=id&limit=5&q=' +
+        encodeURIComponent(query);
+      $.get(uri, function (data, status) {
+        sr.empty();
+        var str_ = '';
+        data.forEach((loc) => {
+          str_ +=
+            '<li><a href="#" lat="' +
+            loc.lat +
+            '" lon="' +
+            loc.lon +
+            '">' +
+            loc.display_name +
+            '</a></li><li role="separator" class="divider"></li>';
+        });
+        if (data.length == 0) {
+          str_ +=
+            '<li><p style="color: white;">Maaf, tidak ada hasil pencarian</p></li>';
+          sr.append(str_);
+        } else {
+          sr.append(str_);
+          sr.on('click', 'a', function (e) {
+            e.preventDefault();
+            const lat = $(e.target).attr('lat');
+            const lon = $(e.target).attr('lon');
+            $('#search-map').dropdown('toggle');
+            view.setCenter(ol.proj.fromLonLat([lon, lat]));
+            view.setZoom(15);
+          });
+        }
+      });
+    };
+    //# End of MAP SEARCH BAR PROCESSOR #
+
+    //# MAP BUTTON AND INPUT LISTENER #
+    $('#search-map input').on('keyup', function (e) {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        searchLocation($('#search-map input').first().val());
+      }
+    });
+    $('#search-btn').click(function (e) {
+      searchLocation($('#search-map input').first().val());
+    });
+    $('#pilihlokasi-btn').click(function () {
+      $('input#near-school').val(null);
+      const pt = ol.proj.toLonLat(map.getView().getCenter());
+      lon_elem.val(pt[0]);
+      lat_elem.val(pt[1]);
+      let provinsi_kk = $('select[name=provinsi_kk]').val();
+      if (provinsi_kk != '05_JAWA TIMUR') {
+        $('#lat').rules('remove', 'min max');
+        $('#lon').rules('remove', 'min max');
+      } else {
+        $('#lat').rules('add', {
+          required: true,
+          min: -8.76579,
+          max: -5.715736,
+        });
+        $('#lon').rules('add', {
+          required: true,
+          min: 110.899311,
+          max: 115.89345,
+        });
+      }
+      $('#info').html(
+        '<p>Lokasi Kamu di [Latitude:' +
+          pt[1] +
+          ' ,Longitude: ' +
+          pt[0] +
+          ']</p>' +
+          '<p>Bukan alamat kamu? <span class="btn btn-warning" id="ganti-lokasi" style="color:white;padding: 2 6;vertical-align: unset;">Ganti Lokasi</span></p><hr>'
+      );
+      FormAmbilLokasi_validator.form();
+      toggleMapActive();
+      $('#info #ganti-lokasi').on('click', function (e) {
+        $('#info').empty();
+        toggleMapActive();
+      });
+    });
+    //# END of MAP BUTTON AND INPUT LISTENER #
+
+    toggleMapActive();
+
+    $('#map').css('height', '200px');
+    $('#ambil-lokasi').click(function () {
+      $('input#near-school').val(null);
+      $('#map').css('height', '');
+      toggleMapActive();
+      cariLokasiKabKota();
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          // async
+          if (position.coords.accuracy <= 100) {
+            view.setCenter(
+              ol.proj.fromLonLat([
+                position.coords.longitude,
+                position.coords.latitude,
+              ])
+            );
+          }
+        });
+      }
+      $('#ambil-lokasi').parent().remove();
+    });
+
+    setLokasiPeta = function () {
+      view.setCenter(
+        ol.proj.fromLonLat([
+          lokasi_awal.lon,
+          lokasi_awal.lat, // taken from formwizard
+        ])
+      );
+    };
+  });
+</script>

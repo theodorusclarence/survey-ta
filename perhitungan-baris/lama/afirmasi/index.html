@@ -1,0 +1,578 @@
+<?php
+if ($this->session->userdata("daftar_afirmasi")) { $nama =
+$this->session->userdata("daftar_afirmasi")["nama"]; $jalur =
+$this->session->userdata("daftar_afirmasi")["jalur"]; } else { $nama = $jalur =
+null; } ?>
+<style>
+  .visited {
+    color: #00798b !important;
+  }
+  .visited > .bubble,
+  .visited > .bubble:after,
+  .visited > .bubble:before {
+    background-color: #00a9c0 !important;
+  }
+  .fw-buttons .disabled {
+    cursor: not-allowed !important;
+    pointer-events: auto !important;
+  }
+  .panel-default .panel-heading-custom {
+    background-image: none;
+    background-color: #0090a2;
+    color: #fff;
+    border-radius: 0;
+  }
+  .wizard-content {
+    border: none;
+  }
+  .wizard-pane {
+    padding: 0;
+    display: none;
+  }
+  .wizard-pane.active {
+    display: block;
+  }
+</style>
+<script>
+  let fw_fv = [];
+</script>
+<div class="row font">
+  <h2 class="font-tebel text-center">
+    Pendaftaran
+    <span style="font-size: 25px"
+      >| Jalur
+      <?= $jalur ?></span
+    >
+    <small
+      >|
+      <?= $nama ?></small
+    >
+  </h2>
+  <hr />
+  <div class="col-md-12 col-md-border">
+    <div
+      id="formAfirmasi"
+      class="wizard"
+    >
+      <ul
+        class="progress-indicator"
+        role="tablist"
+      >
+        <?php
+        $found_first_step = false;
+        if (isset($fw_steps)) {
+            foreach ($fw_steps as $step) {
+                if (
+                    isset($step["notused"]) and
+                    $step["notused"] and
+                    !$found_first_step
+                ) {
+                    echo 
+                } elseif (isset($step["notused"]) and $step["notused"]) {
+                    echo 
+                } elseif (!$found_first_step) {
+                    echo 
+                    $found_first_step = true;
+                } else {
+                    echo 
+                }
+            }
+        }
+        ?>
+      </ul>
+      <div class="panel panel-default card-1">
+        <?php echo form_open($route, [
+            "id" =>
+        "form-utama", "style" => "display: none", ]); ?>
+        <input
+          type="hidden"
+          name="<?php echo $this->security->get_csrf_token_name(); ?>"
+          value="<?php echo $this->security->get_csrf_hash(); ?>"
+        />
+        <?php echo form_close(); ?>
+        <div class="wizard-content">
+          <?php foreach ($fw_contents as $i =>
+          $content) { echo '<div class="wizard-pane ' . ($i == 0 ? "active" :
+          "") . '" role="tabpanel">' . $content . "
+        </div>
+        "; } ?>
+        <p
+          class="pull-right"
+          style="padding: 0px 30px"
+        >
+          <em>
+            Pendaftaran Jalur <strong><?= $jalur ?></strong></em
+          >
+        </p>
+        <span class="clearfix"></span>
+        <div class="panel-footer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  style="display: none"
+  id="formulirAkhir"
+>
+  <div class="col">
+    <div class="s-dan-k">
+      <h3 class="font-agak-tebel"><b>Syarat dan Ketentuan</b></h3>
+      <hr />
+      <p>Dengan sungguh-sungguh menyatakan bahwa saya:</p>
+      <p>
+        Dokumen bukti keikutsertaan dalam program penanganan keluarga tidak
+        mampu pada pendaftaran Peneriman Peserta Didik Baru SMAN/SMKN 2022
+        Provinsi Jawa Timur adalah benar.
+      </p>
+      <p>
+        Demikian pernyataan ini saya buat dengan sebenarnya dan penuh rasa
+        tanggung jawab. Apabila dikemudian hari ditemukan bahwa dokumen yang
+        saya sampaikan tidak benar dan/atau ada pemalsuan, maka seluruh
+        keputusan yang telah ditetapkan berdasarkan berkas tersebut batal
+        berdasarkan hukum dan saya bersedia dikenakan sanksi sesuai ketentuan
+        peraturan perundang-undangan yang berlaku dan jika diterima sebagai
+        Calon Peserta Didik Baru, <strong>dicabut</strong> haknya sebagai
+        peserta didik baru.
+      </p>
+    </div>
+    <form
+      action=""
+      id="sk-konfirmasi"
+      style="margin: 0"
+    >
+      <div>
+        <input
+          id="agreement-read"
+          type="checkbox"
+          name="agreement"
+          required
+        />
+        <label for="agreement-read">Saya setuju</label>
+      </div>
+      <div id="errorContainerSK1"></div>
+      <div
+        style="
+          margin: -44;
+          margin-top: 1.75rem;
+          text-align: right;
+          padding: 10 24;
+        "
+      >
+        <button
+          class="btn font-putih fileinput-button"
+          type="submit"
+          style="margin-bottom: 24; background-color: #0090a2"
+        >
+          Simpan Permanen
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<a
+  style="display: none"
+  data-fancybox
+  data-src="#formulirAkhir"
+  id="form-pernyataan"
+  href="javascript:;"
+>
+  Trigger the fancybox
+</a>
+<script>
+  $(document).ready(function () {
+    $('#sk-konfirmasi').validate({
+      rules: {
+        agreement: {
+          required: true,
+        },
+      },
+      message: {
+        agreement: 'Anda harus mencentang sebelum melanjutkan.',
+      },
+      errorPlacement: function (error, element) {
+        error.appendTo($('#errorContainerSK1'));
+      },
+    });
+
+    $('#sk-konfirmasi').submit(function (e) {
+      e.preventDefault();
+      $('#sk-konfirmasi').form();
+      if ($('#sk-konfirmasi').valid() == true) {
+        swal({
+          title: 'Perhatian',
+          text: 'Apakah Anda yakin data yang dimasukkan sudah benar? Setelah melakukan penyimpanan permanen, data tidak dapat diubah kembali!',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Batal',
+          confirmButtonText: 'Simpan Permanen',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false,
+          showLoaderOnConfirm: true,
+        }).then((isConfirmed) => {
+          if (isConfirmed) {
+            submitForm();
+          }
+        });
+      }
+    });
+  });
+</script>
+<script type="text/javascript">
+                $( document ).ready(function () {
+                  $('#formAfirmasi').wizard({
+                    step: '.progress-indicator > li.fw-used',
+                    classes: {
+                      step: {
+                        done: 'visited',
+                        active: 'completed'
+                      }
+                    },
+                    buttonLabels: {
+                      next: 'Berikutnya',
+                      back: 'Kembali',
+                      finish: 'Simpan Permanen'
+                    },
+                    buttonsAppendTo: '.panel-footer',
+                    templates: {
+                      buttons: function() {
+                        const options = this.options;
+                        return (`
+                          <div class="fw-buttons">
+                            <a class="btn btn-danger font-putih" href="#${this.id}" data-wizard="back" role="button">
+                              ${options.buttonLabels.back}</a>
+                            <a class="btn btn-primary pull-right font-putih" href="#${this.id}" data-wizard="next" role="button">
+                              ${options.buttonLabels.next}</a>
+                            <a class="btn btn-primary pull-right font-putih" href="#${this.id}" data-wizard="finish" role="button">
+                              ${options.buttonLabels.finish}</a>
+                          </div>
+                        `);
+                      }
+                    },
+                    onNext: function(from) {
+                      $('html, body').animate({
+                        scrollTop: 0
+                      }, 200);
+                    },
+                    onFinish: function () {
+                      const jalur = <?php echo json_encode($jalur); ?>;
+                      if(jalur === 'Penyandang Disabilitas') {
+                        swal({
+                          title: 'Perhatian',
+                          text: "Apakah Anda yakin data yang dimasukkan sudah benar? Setelah melakukan penyimpanan permanen, data tidak dapat diubah kembali!",
+                          type: 'warning',
+                          showCancelButton: true,
+                          confirmButtonColor: '#3085d6',
+                          cancelButtonColor: '#d33',
+                          cancelButtonText: 'Batal',
+                          confirmButtonText: 'Simpan Permanen',
+                          allowOutsideClick: false,
+                          allowEscapeKey: false,
+                          allowEnterKey: false,
+                          showLoaderOnConfirm: true
+                        }).then((isConfirmed) => {
+                          if(isConfirmed) {
+                            submitForm();
+                          }
+                        })
+                      } else {
+                        $('#form-pernyataan').trigger('click');
+                      }
+                    },
+                    validator: function(step) {
+                      if (fw_fv[step.index] === undefined) {
+                          return true;
+                      }
+
+                      fw_fv[step.index].form();
+
+                      if(fw_fv[step.index].valid() === true) {
+                        const jalur = <?php echo json_encode($jalur); ?>;
+                        let valid = true;
+
+                        if(step.index == 0) {
+                          isPilihSMA = $('#is_pilih_sma').val();
+                          kabKota = '';
+                          sekolah = '';
+
+                          if(isPilihSMA === 'true') {
+                            kabKota = $('#kab_kota_sma').val();
+                            sekolah = $('#sekolah_sma').val();
+                          } else if(isPilihSMA === 'false') {
+                            kabKota = $('#kab_kota_smk').val();
+                            sekolah = $('#sekolah_smk').val();
+                            if(jalur === 'Penyandang Disabilitas') {
+                                sekolah = $('#smk_jurusan').val();
+                            }
+                          }
+
+                          ketunaan = (jalur === 'Penyandang Disabilitas') ? $('#ketunaan').val() : '';
+
+                          $.ajax({
+                            url: "<?php echo base_url("daftar/afirmasi/submit_sekolah"); ?>",
+                            type: "POST",
+                            dataType: "json",
+                            cache: true,
+                            async: false,
+                            data: {
+                              is_pilih_sma : isPilihSMA,
+                              kab_kota : kabKota,
+                              sekolah : sekolah,
+                              ketunaan: ketunaan,
+                              <?php echo $this->security->get_csrf_token_name(); ?> : <?php echo "'" .
+                   $this->security->get_csrf_hash() .
+                   "'"; ?>
+                            },
+                            success: function(response) {
+                              if (response.butuhSK == true) {
+                                let url = "<?php echo base_url("verifikasi_kesehatan"); ?>";
+                                if (response.sudahVerifKesehatan == 0 || response.sudahVerifKesehatan == null) {
+                                  swal({
+                                      title: 'Gagal!',
+                                      html: `<span class="font-reguler"
+        >Jurusan ini memerlukan verifikasi kesehatan.<br /><br />
+        Anda belum melakukan verifikasi kesehatan. Silahkan melakukan verifikasi
+        kesehatan! <br /><br />Menu <b>Verifikasi Kesehatan</b> ada di
+        <a
+          href="${url}"
+          class="font-hijau font-tebel"
+          >disini!</a
+        ></span
+      >
+      `,
+                                      type: 'error',
+                                  });
+                                  valid = false;
+                                } else if (response.sudahVerifKesehatan == 1) {
+                                  swal({
+                                      title: 'Gagal!',
+                                      html: `<span class="font-reguler"
+      >Jurusan ini memerlukan verifikasi kesehatan.<br /><br />
+      Anda sudah melakukan verifikasi kesehatan, namun berkas kesehatan Anda belum
+      diverifikasi.</span
+    >
+    `,
+                                      type: 'error',
+                                  });
+
+                                  valid = false;
+                                } else if (response.sudahVerifKesehatan == 2) {
+                                  swal({
+                                        title: 'Anda boleh melanjutkan',
+                                      html: `<span class="font-reguler"
+    >Jurusan ini memerlukan verifikasi kesehatan.<br /><br />
+    Anda sudah melakukan verifikasi kesehatan dan berkas kesehatan Anda sudah
+    diverifikasi.</span
+  >
+  `,
+                                      type: 'success',
+                                  });
+
+                                  valid = true;
+                                } else if (response.sudahVerifKesehatan == -1) {
+                                  swal({
+                                      title: 'Gagal!',
+                                      html: `<span class="font-reguler">Jurusan ini memerlukan verifikasi kesehatan.<br><br>
+                                          Anda sudah melakukan verifikasi kesehatan, namun berkas kesehatan Anda ditolak.`,
+                                      type: 'error',
+                                  });
+
+                                  valid = false;
+                                }
+                              }
+
+                              htmlString = `
+                              <div class="form-group">
+          <h4 style="display: inline-block; margin-right: 10px">
+            <b>Data Sekolah Pilihan</b>
+          </h4>
+        </div>
+        <div class="form-group">
+          <label class="font-tipis">Nama Sekolah</label>
+          <div class="bottom_border">
+            <span class="font-agak-tebel">${response.nama_sekolah}</span>
+          </div>
+        </div>
+
+                                ${response.nama_jurusan ?
+                                  `<div class="form-group">
+                                    <label class="font-tipis">Jurusan</label>
+                                    <div class="bottom_border">
+                                      <span class="font-agak-tebel ">${response.nama_jurusan}</span>
+                                    </div>
+                                  </div>` : ``
+                                }
+                                <div class="form-group">
+                                  <label class="font-tipis">Alamat Sekolah</label>
+                                  <div class="bottom_border">
+                                    <span class="font-agak-tebel ">${response.alamat_sekolah}</span>
+                                  </div>
+                                </div>
+                                ${(response.ketunaan !== '') ?
+                                  `<div class="form-group">
+                                    <label class="font-tipis">Ketunaan</label>
+                                    <div class="bottom_border">
+                                      <span class="font-agak-tebel ">${response.ketunaan}</span>
+                                    </div>
+                                  </div>` : ``
+                                }
+                                <hr>
+                              `;
+
+                              $('#data-sekolah-pilihan').html(htmlString);
+
+                              return true;
+                            },
+                            error: function(xhr, status, error) {
+                              console.log(xhr.responseText);
+                            }
+                          });
+                        } else if(step.index == 1) {
+                          let files = [], html;
+                          const container = $('#berkas');
+
+                          if(jalur === 'Keluarga Tidak Mampu') {
+                            html = `
+                            <div class="form-group">
+                              <h4 style="display: inline-block; margin-right: 10px">
+                                <b>Kelengkapan Berkas</b>
+                              </h4>
+                            </div>
+                            <div class="form-group">
+                              <label
+                                class="font-tipis"
+                                style="text-decoration: underline"
+                                >Foto KIP/KIS/KKS/KBPNT/SKTM</label
+                              >
+                              <img
+                                src="${$('input[name=file_sktm]').val()}"
+                                alt=""
+                                style="
+                                  width: 500px;
+                                  height: 700px;
+                                  margin: 10px auto 50px;
+                                  display: block;
+                                  border: 2px solid #00798b;
+                                  object-fit: cover;
+                                "
+                              />
+                            </div>
+
+                            `;
+                          } else if(jalur === 'Anak Buruh') {
+                            html = `
+                            <div class="form-group">
+              <h4 style="display:inline-block; margin-right: 10px;"><b>Kelengkapan Berkas</b></h4>
+            </div>
+            <div class="form-group">
+              <label class="font-tipis" style="text-decoration: underline">Foto Surat/Tanda Keanggotaan Asosiasi Buruh</label>
+              <img src="${$('input[name=file_sk_buruh]').val()}" alt="" style="width: 500px; height: 700px;margin:10px auto 50px;display:block; border: 2px solid #00798b; object-fit:cover;">
+            </div>
+            <div class="form-group">
+              <label class="font-tipis" style="text-decoration: underline">Foto KIP/KIS/KKS/KBPNT/SKTM</label>
+              <img src="${$('input[name=file_sktm]').val()}" alt="" style="width: 500px; height: 700px;margin:10px auto 50px;display:block; border: 2px solid #00798b; object-fit:cover;">
+            </div>
+                            `;
+                          } else if(jalur === 'Penyandang Disabilitas') {
+                            html = `
+                            <div class="form-group">
+            <h4 style="display: inline-block; margin-right: 10px">
+              <b>Kelengkapan Berkas</b>
+            </h4>
+          </div>
+          <div class="form-group">
+            <label
+              class="font-tipis"
+              style="text-decoration: underline"
+              >Foto Hasil Asesmen Awal</label
+            >
+            <img
+              src="${$('input[name=file_hasil_asesmen]').val()}"
+              alt=""
+              style="
+                width: 500px;
+                height: 700px;
+                margin: 10px auto 50px;
+                display: block;
+                border: 2px solid #00798b;
+                object-fit: cover;
+              "
+            />
+          </div>
+          <div class="form-group">
+            <label
+              class="font-tipis"
+              style="text-decoration: underline"
+              >Foto Surat Keterangan Kepala Sekolah Terkait Siswa Difabel</label
+            >
+            <img
+              src="${$('input[name=file_sk_kds]').val()}"
+              alt=""
+              style="
+                width: 500px;
+                height: 700px;
+                margin: 10px auto 50px;
+                display: block;
+                border: 2px solid #00798b;
+                object-fit: cover;
+              "
+            />
+          </div>
+
+                            `;
+                          }
+
+                          container.html(html);
+                        }
+
+
+                        return valid;
+                      } else {
+                        const elem = $('.has-error').first().children().first();
+
+                        $('html, body').animate({
+                          scrollTop: elem.offset().top - window.innerHeight/4
+                        }, 200);
+
+                        return false;
+                      }
+                    },
+                  });
+                });
+</script>
+<script>
+  const submitForm = () => {
+    $("#form-utama").submit();
+  }
+
+  $(document).ready(() => {
+    const formUtama = $("#form-utama")
+    formUtama.submit(function( e ) {
+      const obj = $( "form" );
+
+      $.each(obj, function(i, val){
+        $.each($(val).serializeArray(), function(i,param){
+          $('<input />').attr('type', 'hidden')
+              .attr('name', param.name)
+              .attr('value', param.value)
+              .appendTo(formUtama);
+        });
+      });
+
+      return true;
+    });
+  });
+
+  const channel = new BroadcastChannel('tab');
+
+  channel.postMessage('another-tab');
+  // note that listener is added after posting the message
+
+  channel.addEventListener('message', (msg) => {
+    if (msg.data === 'another-tab') {
+      window.location.href = "<?php echo base_url("daftar/afirmasi/multitab"); ?>"
+    }
+  });
+</script>

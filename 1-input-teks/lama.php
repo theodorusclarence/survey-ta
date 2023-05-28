@@ -1,5 +1,7 @@
 <div class="form-group">
-  <label>NIK <span style="color:red">*</span></label>
+  <label>NIK 
+    <span style="color:red">*</span>
+  </label>
   <input type="text" class="form-control" id="nik" pattern="^\d{16}$" title="NIK terdiri dari 16 angka" name="nik" required value="" />
 </div>
 

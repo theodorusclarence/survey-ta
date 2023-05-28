@@ -1,0 +1,348 @@
+<?php
+if ($this->session->userdata("daftar_afirmasi")) { $nama =
+$this->session->userdata("daftar_afirmasi")["nama"]; $smp_uasbn =
+$this->session->userdata("daftar_afirmasi")["no_un"]; $id_merge =
+$this->session->userdata("daftar_afirmasi")["id_merge"]; $jalur =
+$this->session->userdata("daftar_afirmasi")["jalur"]; } else { $nama =
+$smp_uasbn = $id_merge = $jalur = null; } ?>
+<div class="panel-heading panel-heading-custom">
+  <h3
+    class="tulisan-tebel font-putih"
+    style="font-size: 25pt"
+  >
+    Mengunggah Berkas
+  </h3>
+</div>
+<div
+  class="panel-body"
+  style="padding: 20px 30px"
+>
+  <div
+    class="alert alert-warning text-center font-tipis"
+    style="margin-bottom: 30px"
+  >
+    <h4>Ekstensi Berkas Foto yang Diperbolehkan (.jpg, .jpeg, .png)</h4>
+    <h4>
+      Ukuran Berkas Foto yang Diperbolehkan Minimal 100 KB dan Maksimal 400KB
+    </h4>
+  </div>
+  <form
+    action=""
+    id="form-berkas"
+  >
+    <div class="row">
+      <?php if (isset($jalur) && $jalur == "Anak Buruh") { ?>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label
+            >Unggah Surat Keterangan Asosiasi Buruh
+            <span style="color: red">*</span></label
+          >
+          <div class="input-group">
+            <span
+              class="input-group-btn"
+              style="vertical-align: top"
+            >
+              <span
+                class="btn btn-default btn-file"
+                id="file-sk-buruh"
+                fileupload-result="#file-sk-buruh-result"
+              >
+                Browse...
+              </span>
+            </span>
+            <div
+              id="filename"
+              class="form-control"
+              style="height: fit-content; z-index: 0"
+            >
+              Foto Surat/Tanda Keanggotaan Asosiasi Buruh
+            </div>
+          </div>
+          <div>
+            <input
+              class="file-sk-buruh"
+              value=""
+              readonly
+              name="file_sk_buruh[]"
+              style="position: absolute; opacity: 0; height: 0"
+            />
+          </div>
+          <ul
+            class="fileupload-result"
+            id="file-sk-buruh-result"
+            style="margin-top: 12"
+          ></ul>
+        </div>
+      </div>
+      <?php } ?>
+      <?php if (isset($jalur) && $jalur == "Penyandang Disabilitas") { ?>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label
+            >Unggah Hasil Asesmen Awal <span style="color: red">*</span></label
+          >
+          <div class="input-group">
+            <span
+              class="input-group-btn"
+              style="vertical-align: top"
+            >
+              <span
+                class="btn btn-default btn-file"
+                id="file-hasil-asesmen"
+                fileupload-result="#file-hasil-asesmen-result"
+              >
+                Browse...
+              </span>
+            </span>
+            <div
+              id="filename"
+              class="form-control"
+              style="height: fit-content; z-index: 0"
+            >
+              Foto Hasil Asesmen Awal
+            </div>
+          </div>
+          <div>
+            <input
+              class="file-hasil-asesmen"
+              value=""
+              readonly
+              name="file_hasil_asesmen[]"
+              style="position: absolute; opacity: 0; height: 0"
+            />
+          </div>
+          <ul
+            class="fileupload-result"
+            id="file-hasil-asesmen-result"
+            style="margin-top: 12"
+          ></ul>
+        </div>
+        <div class="form-group">
+          <label
+            >Unggah Surat Keterangan Kepala Sekolah Terkait Siswa Difabel
+            <span style="color: red">*</span></label
+          >
+          <div class="input-group">
+            <span
+              class="input-group-btn"
+              style="vertical-align: top"
+            >
+              <span
+                class="btn btn-default btn-file"
+                id="file-sk-kds"
+                fileupload-result="#file-sk-kds-result"
+              >
+                Browse...
+              </span>
+            </span>
+            <div
+              id="filename"
+              class="form-control"
+              style="height: fit-content; z-index: 0"
+            >
+              Foto surat keterangan kepala sekolah asal yang menerangkan
+              kelompok difabel siswa
+            </div>
+          </div>
+          <div>
+            <input
+              class="file-sk-kds"
+              value=""
+              readonly
+              name="file_sk_kds[]"
+              style="position: absolute; opacity: 0; height: 0"
+            />
+          </div>
+          <ul
+            class="fileupload-result"
+            id="file-sk-kds-result"
+            style="margin-top: 12"
+          ></ul>
+        </div>
+      </div>
+      <?php } ?>
+      <?php if (
+                isset($jalur) &&
+                ($jalur == "Keluarga Tidak Mampu" || $jalur == "Anak Buruh")
+            ) { ?>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label
+            >Unggah Bukti KIP, KIS, KKS, PKH, KBPNT, BST, atau SKTM
+            <span style="color: red">*</span></label
+          >
+          <div class="input-group">
+            <span
+              class="input-group-btn"
+              style="vertical-align: top"
+            >
+              <span
+                class="btn btn-default btn-file"
+                id="file-sktm"
+                fileupload-result="#file-sktm-result"
+              >
+                Browse...
+              </span>
+            </span>
+            <div
+              id="filename"
+              class="form-control"
+              style="height: fit-content; z-index: 0"
+            >
+              Foto Surat Keterangan Tidak Mampu
+            </div>
+          </div>
+          <div>
+            <input
+              class="file-sktm"
+              value=""
+              readonly
+              name="file_sktm[]"
+              style="position: absolute; opacity: 0; height: 0"
+            />
+          </div>
+          <ul
+            class="fileupload-result"
+            id="file-sktm-result"
+            style="margin-top: 12"
+          ></ul>
+        </div>
+      </div>
+      <?php } ?>
+    </div>
+  </form>
+</div>
+<script>
+  $( document ).ready( function () {
+      //# UPLOAD SK BURUH
+      new CustomUploadWizard($('#file-sk-buruh'), $('#fileupload'), {
+              min:1, max:1,
+              name: 'SK Asosiasi Buruh',
+              target_name: 'file_sk_buruh',
+              target_class: 'file-sk-buruh',
+          },
+          [
+              { "name":"tipe_berkas", "value":"kartu_anggota_ab"},
+              { "name":"smp_uasbn", "value":"<?= $smp_uasbn . $id_merge ?>"}
+          ],
+          "<h5>Foto Surat/Tanda Keanggotaan Asosiasi Buruh yang dimiliki orang tua/wali</h5>"
+      );
+
+      //# UPLOAD HASIL ASESMEN
+      new CustomUploadWizard($('#file-hasil-asesmen'), $('#fileupload'), {
+              min:1, max:1,
+              name: 'Hasil Asesmen Awal',
+              target_name: 'file_hasil_asesmen',
+              target_class: 'file-hasil-asesmen',
+          },
+          [
+              { "name":"tipe_berkas", "value":"foto_hasil_asesmen"},
+              { "name":"smp_uasbn", "value":"<?= $smp_uasbn . $id_merge ?>"}
+          ],
+          "<h5>Berkas berupa Asesmen Fisik/Psikologis, Akademik, Fungsional, Sensorik dan Motorik oleh Psikolog, Psikiater, Dokter Spesialis</h5>"
+      );
+
+      //# UPLOAD SK KELOMPOK DIFABEL SISWA
+      new CustomUploadWizard($('#file-sk-kds'), $('#fileupload'), {
+              min:1, max:1,
+              name: 'SK Kepala Sekolah Terkait Siswa Difabel',
+              target_name: 'file_sk_kds',
+              target_class: 'file-sk-kds',
+          },
+          [
+              { "name":"tipe_berkas", "value":"foto_sk_kds"},
+              { "name":"smp_uasbn", "value":"<?= $smp_uasbn . $id_merge ?>"}
+          ],
+          "<h5>Surat keterangan Kepala Sekolah asal yang menerangkan kelompok difabel siswa serta telah menyelesaikan pendidikan jenjang SMP atau bentuk lain yang sederajat</h5>"
+      );
+
+      //# UPLOAD SKTM
+      new CustomUploadWizard($('#file-sktm'), $('#fileupload'), {
+              min:1, max:1,
+              name: 'SK Tidak Mampu',
+              target_name: 'file_sktm',
+              target_class: 'file-sktm',
+          },
+          [
+              { "name":"tipe_berkas", "value":"foto_sk_tidakmampu"},
+              { "name":"smp_uasbn", "value":"<?= $smp_uasbn . $id_merge ?>"}
+          ],
+          "<h5>Berkas dapat berupa KIP, KIS, Kartu Keluarga Sejahtera (KKS), Program Keluarga Harapan (PKH), Kartu Bantuan Pangan Non Tunai (KBPNT), Kartu Bantuan Sosial Tunai (BST), Surat Keterangan Miskin, atau Surat Keterangan Tidak Mampu</h5>"
+      );
+  });
+
+  const jalur = <?php echo '"' . $jalur . '"'; ?>;
+  let ruleObject;
+
+  if(jalur === 'Keluarga Tidak Mampu') {
+      ruleObject = {
+          'file_sktm[]': {
+              require_from_group: [1, ".file-sktm"]
+          },
+      }
+  } else if(jalur === 'Anak Buruh') {
+      ruleObject = {
+          'file_sk_buruh[]': {
+              require_from_group: [1, ".file-sk-buruh"]
+          },
+          'file_sktm[]': {
+              require_from_group: [1, ".file-sktm"]
+          },
+      }
+  } else if(jalur === 'Penyandang Disabilitas') {
+      ruleObject = {
+          'file_hasil_asesmen[]': {
+              require_from_group: [1, ".file-hasil-asesmen"]
+          },
+          'file_sk_kds[]': {
+              require_from_group: [1, ".file-sk-kds"]
+          },
+      }
+  }
+
+  let formValidatorBerkas = $("#form-berkas").validate({
+      rules: ruleObject,
+      messages: {
+          'file_sk_buruh[]': "* Belum melakukan unggah Kartu Asosiasi Buruh",
+          'file_sktm[]': "* Belum melakukan unggah KIP/KIS/KSK/SKTM",
+          'file_hasil_asesmen[]': "* Belum melakukan unggah Hasil Asesmen Awal",
+          'file_sk_kds[]': "* Belum melakukan unggah SK Kepala Sekolah Terkait Siswa Difabel",
+      },
+      success: function(label) {
+          label.detach();
+      },
+      errorElement: "em",
+      errorPlacement: function ( error, element ) {
+          error.addClass( "help-block" );
+          error.insertAfter(element);
+      },
+      highlight: function ( element, errorClass, validClass ) {
+          $( element ).parent().addClass( "has-error" ).removeClass( "has-success" );
+      },
+      unhighlight: function (element, errorClass, validClass) {
+          $( element ).parent().removeClass( "has-error" );
+      }
+  });
+
+  fw_fv.push(formValidatorBerkas);
+
+  function konfirmasi_batal() {
+      swal({
+          title: 'Yakin Batalkan Pendaftaran?',
+          text: "Data yang anda masukkan sebelumnya tidak akan disimpan!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Belum yakin',
+          confirmButtonText: 'Ya, Batalkan Pendaftaran',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false,
+          showLoaderOnConfirm: true
+      }).then(function () {
+          window.location.href = "<?php echo base_url("daftar/afirmasi"); ?>";
+      })
+  }
+</script>

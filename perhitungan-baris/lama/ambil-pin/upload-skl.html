@@ -1,0 +1,268 @@
+<div class="panel-heading panel-heading-custom">
+  <h3
+    class="tulisan-tebel font-putih"
+    style="font-size: 25pt"
+  >
+    Unggah Surat Keterangan Lulus
+  </h3>
+</div>
+<form
+  id="FormSKL"
+  method="post"
+  action=""
+>
+  <div
+    class="panel-body"
+    style="padding: 20px 30px"
+  >
+    <div class="col-sm-12">
+      <div
+        class="alert alert-info text-center font-tipis"
+        style="margin-bottom: 10px"
+      >
+        <h4>Unggah Surat Keterangan Lulus Anda</h4>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <h4 style="display: inline-block; margin-right: 10px">
+        <b>Data Surat Keterangan Lulus</b>
+      </h4>
+      <p style="display: inline-block; color: red; margin-bottom: 15px">
+        * wajib diisi
+      </p>
+
+      <?php if ($this->session->userdata("jalur") == "pin_luar_jatim") { ?>
+      <div class="form-group">
+        <label
+          >Kabupaten/Kota Sekolah Asal <span style="color: red">*</span></label
+        >
+        <input
+          name="kab_kota_sklh_asal"
+          id="kab_kota_sklh_asal"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label>Sekolah Asal <span style="color: red">*</span></label>
+        <input
+          name="sekolah_asal"
+          id="sekolah_asal"
+          class="form-control"
+          required
+        />
+      </div>
+      <?php } else { ?>
+      <div class="form-group">
+        <label
+          >Kabupaten/Kota Sekolah Asal <span style="color: red">*</span></label
+        >
+        <select
+          name="kab_kota_sklh_asal"
+          id="kab_kota_sklh_asal"
+          class="form-control"
+          required
+        >
+          <option></option>
+          <?php if (isset($all_kab_kota)) {
+                            foreach ($all_kab_kota as $kotakab) { ?>
+          <option value="<?= $kotakab->kode_kota_kabupaten ?>">
+            <?= $kotakab->nama_kota_kabupaten ?>
+            <?php }
+                        } ?>
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Sekolah Asal <span style="color: red">*</span></label>
+        <select
+          name="sekolah_asal"
+          id="sekolah_asal"
+          class="form-control"
+          required
+        >
+          <option></option>
+        </select>
+      </div>
+      <?php } ?>
+      <div class="form-group">
+        <label>No SKL <span style="color: red">*</span></label>
+        <input
+          type="text"
+          pattern="^[A-Z0-9/.-]*$"
+          class="form-control"
+          id="no_skl"
+          name="no_skl"
+          value=""
+          required
+        />
+      </div>
+      <label>Foto SKL <span style="color: red">*</span></label>
+      <div
+        class="alert alert-warning text-center font-tipis"
+        style="margin-bottom: 30px"
+      >
+        <h4>Ekstensi Berkas Foto yang Diperbolehkan (.jpg, .jpeg, .png)</h4>
+        <h4>Ukuran Minimum Berkas Foto yang Diperbolehkan (200 KB)</h4>
+        <h4>
+          Dimensi Panjang Minimum Berkas Foto yang Diperbolehkan (600 piksel)
+        </h4>
+        <h4>
+          Jika Ukuran Berkas yang diunggah Melebihi (400 KB), Sistem akan
+          Otomatis Melakukan Penyesuaian Ukuran
+        </h4>
+      </div>
+    </div>
+    <div class="input-group">
+      <span
+        class="input-group-btn"
+        style="vertical-align: top"
+      >
+        <span
+          class="btn btn-default btn-file"
+          id="file-skl"
+          fileupload-result="#file-skl-result"
+        >
+          <!-- yg diubah: id, fileupload-result -->
+          Browse...
+        </span>
+      </span>
+      <div
+        id="filename"
+        class="form-control"
+        style="height: fit-content; z-index: 0"
+      >
+        Foto Surat Keterangan Lulus
+      </div>
+    </div>
+    <div>
+      <input
+        class="file-skl"
+        value=""
+        readonly
+        name="file_skl[]"
+        style="position: absolute; opacity: 0; height: 0"
+      />
+      <!-- yg diubah: class, name -->
+    </div>
+    <ul
+      class="fileupload-result"
+      id="file-skl-result"
+      style="margin-top: 12"
+    >
+      <!-- yg diubah: id -->
+      <!-- tempat hasil uploadan -->
+    </ul>
+  </div>
+</form>
+<script type="text/javascript">
+  $( document ).ready( function () {
+      //# UPLOAD WIZARD TRIGGER #
+      new CustomUploadWizard($('#file-skl'), $('#fileupload'), {
+              min:1, max:1,
+              name: 'SKL',
+              target_name: 'file_skl',
+              target_class: 'file-skl',
+          },
+          [
+              { "name":"tipe_berkas", "value":"foto_bukti_lulus"},
+              { "name":"smp_uasbn", "value":"<?= $smp_uasbn ?>"}
+          ]
+      );
+      //# END of UPLOAD WIZARD TRIGGER #
+
+      var FormSKL_validator = $( "#FormSKL" ).validate( {
+          rules: {
+              'file_skl[]': {
+                  require_from_group: [1, ".file-skl"]
+              },
+          },
+          messages: {
+              kab_kota_sklh_asal:{
+                  required: "* Silahkan pilih kota asal sekolah"
+              },
+              sekolah_asal:{
+                  required: "* Silahkan pilih asal sekolah"
+              },
+              no_skl: '* Karakter yang diperbolehkan adalah huruf kapital, angka, "." , "/" , "-"',
+              'file_skl[]': "* Belum melakukan unggah SKL"
+          },
+          success: function(label) {
+              label.detach();
+          },
+          errorElement: "em",
+          errorPlacement: function ( error, element ) {
+              // Add the `help-block` class to the error element
+              error.addClass( "help-block" );
+
+              if ( element.prop( "type" ) === "checkbox" ) {
+                  error.insertAfter( element.parent( "label" ) );
+              } else {
+                  error.insertAfter( element );
+              }
+          },
+          highlight: function ( element, errorClass, validClass ) {
+              $( element ).parent().addClass( "has-error" ).removeClass( "has-success" );
+          },
+          unhighlight: function (element, errorClass, validClass) {
+              $( element ).parent().removeClass( "has-error" );
+          }
+      });
+
+      fw_fv.push(FormSKL_validator);
+
+      $.fn.select2.defaults.set( "theme", "bootstrap" );
+      $.fn.select2.defaults.set( "width", "100%" );
+
+      <?php if ($this->session->userdata("jalur") != "pin_luar_jatim") { ?>
+      //# ASAL SEKOLAH #
+      $("#kab_kota_sklh_asal").select2({
+          placeholder: "Pilih Kota Asal Sekolah",
+      });
+
+      $('#sekolah_asal').select2({
+          placeholder: "Pilih Asal Sekolah",
+      });
+      $('#kab_kota_sklh_asal').change(function () {
+          $('#sekolah_asal option').remove();
+          var sekolah_asal = $('#sekolah_asal');
+          sekolah_asal.select2('destroy');
+          sekolah_asal.append('<option></option>');
+          ToggleInputLoading(sekolah_asal.parent());
+          $.ajax({
+              url: "<?php echo base_url("pin/getSMPByKode"); ?>",
+              type: "POST",
+              dataType: "json",
+              cache: true,
+              async: true,
+              data: {
+                  kab_kota : $(this).val(),
+                  <?php echo $this->security->get_csrf_token_name(); ?> : <?php echo "'" .
+       $this->security->get_csrf_hash() .
+       "'"; ?>
+              },
+              success: function(response) {
+                  var data = $.map(response, function (obj) {
+                      obj.id = obj.npsn+'_'+obj.id_role+'_'+obj.nama_sekolah;
+                      obj.text = obj.nama_sekolah;
+                      return obj;
+                  });
+
+                  sekolah_asal.select2({
+                      data: data,
+                      placeholder: "Pilih Asal Sekolah",
+                  })
+                  ToggleInputLoading(sekolah_asal.parent());
+                  $.each(response,function (item,value) {
+                      sekolah_asal.append(`<option value='${value.kode_sekolah_smp}_${value.id_role}_${value.nama_sekolah}'>${value.nama_sekolah}</option>`);
+                  });
+              },
+              error: function(xhr, status, error) {
+                  console.log(xhr.responseText);
+              }
+          });
+      });
+      //# END of ASAL SEKOLAH #
+      <?php } ?>
+  });
+</script>

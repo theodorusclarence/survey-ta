@@ -1,0 +1,104 @@
+<?php
+if (
+    $this->session->userdata("daftar_afirmasi") &&
+$this->session->userdata("pilihsekolah_afirmasi") &&
+$this->session->userdata("unggahberkas_afirmasi") ) { $nama =
+$this->session->userdata("daftar_afirmasi")["data_siswa"][ "smp_nama_siswa" ];
+$no_uasbn = $this->session->userdata("daftar_afirmasi")["data_siswa"][
+"smp_uasbn" ]; $jalur = $this->session->userdata("daftar_afirmasi")["jalur"];
+$nama_sekolah = $this->session->userdata("pilihsekolah_afirmasi")["sekolah"]
+->nama_sekolah; $kode_paket_keahlian =
+$this->session->userdata("pilihsekolah_afirmasi")[ "sekolah"
+]->kode_paket_keahlian; $nama_jurusan =
+$this->session->userdata("pilihsekolah_afirmasi")["sekolah"] ->nama_jurusan; }
+else { $nama = $jalur = $no_uasbn = null; $nama_sekolah = $kode_paket_keahlian =
+$nama_jurusan = null; } ?>
+<div class="row font">
+  <h2 class="font-tebel text-center">
+    Pendaftaran
+    <span style="font-size: 25px"
+      >| Jalur
+      <?= $jalur ?></span
+    >
+    <small
+      >|
+      <?= $nama ?></small
+    >
+  </h2>
+  <hr />
+  <div class="col-md-12 col-md-border">
+    <ul class="progress-indicator">
+      <li class="completed"><span class="bubble"></span>Login</li>
+      <li class="completed">
+        <span class="bubble"></span>Memilih Sekolah Tujuan
+      </li>
+      <li class="completed"><span class="bubble"></span>Mengunggah Berkas</li>
+      <li class="completed"><span class="bubble"></span>Konfirmasi Data</li>
+      <li class="completed">
+        <span class="bubble"></span>Cetak Bukti Pendaftaran
+      </li>
+    </ul>
+    <div class="panel panel-default card-1">
+      <div class="panel-heading panel-heading-custom">
+        <h3
+          class="tulisan-tebel font-putih"
+          style="font-size: 25pt"
+        >
+          Konfirmasi Data
+        </h3>
+      </div>
+      <?= form_open_multipart(
+                "pendaftaran/semionline_cetak_bukti_pendaftaran",
+                ["id" =>
+      "form_cetak"] ) ?>
+      <div
+        class="panel-body text-center"
+        style="padding: 20px 30px"
+      >
+        <h1 class="font-tebel"><b>Selamat!</b></h1>
+        <h4>
+          Berhasil Melakukan Pendaftaran. Pendaftaran Anda telah terkirim dan
+          sedang diverifikasi.
+        </h4>
+        <h4>
+          Harap mencetak bukti pendaftaran <b><?= $nama_sekolah ?></b
+          ><?php if (
+    isset($kode_paket_keahlian)
+) {
+    echo " jurusan ";
+} ?><b
+            ><?php if (isset($kode_paket_keahlian)) {
+    echo $nama_jurusan;
+} ?></b
+          >
+          dengan melakukan login kembali.
+        </h4>
+        <input
+          hidden
+          readonly
+          name="no_uasbn"
+          type="text"
+          value="<?phpecho $no_uasbn?>"
+        />
+        <button
+          type="submit"
+          id="lanjut_proses"
+          class="btn btn-info font-putih"
+        >
+          Cetak
+        </button>
+        <h4>Silahkan menunggu hasilnya hingga waktu yang telah ditentukan.</h4>
+        <hr />
+      </div>
+      <?= form_close() ?>
+      <div class="panel-footer text-center">
+        <a
+          href="<?php echo base_url(); ?>"
+          class="btn btn-primary font-putih"
+          >Kembali Ke Beranda</a
+        >
+        <span class="clearfix"></span>
+      </div>
+    </div>
+  </div>
+</div>

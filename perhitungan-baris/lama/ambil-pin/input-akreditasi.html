@@ -1,0 +1,178 @@
+<style>
+  .custom-ul1,
+  li {
+    list-style: none;
+  }
+  .custom-ul1 > li:before {
+    content: '(*)';
+    position: absolute;
+    transform: translateX(-24px);
+    color: red;
+  }
+</style>
+<div class="panel-heading panel-heading-custom">
+  <h3
+    class="tulisan-tebel font-putih"
+    style="font-size: 25pt"
+  >
+    Input Nilai Akreditasi
+  </h3>
+</div>
+<form
+  id="FormAkreditasi"
+  method="post"
+  action=""
+>
+  <div
+    class="panel-body"
+    style="padding: 20px 30px"
+  >
+    <div class="container-fluid">
+      <h4 style="display: inline-block; margin-right: 10px">
+        <b>Data Akreditasi Sekolah Asal</b>
+      </h4>
+      <p style="display: inline-block; color: red; margin-bottom: 15px">
+        * wajib diisi
+      </p>
+
+      <div class="form-group">
+        <label
+          >Nilai Akreditasi Sekolah Asal<span style="color: red">*</span></label
+        >
+        <input
+          type="number"
+          min="0"
+          max="100"
+          name="nilai_akreditasi"
+          id="nilai-akreditasi"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="col-sm-12">
+        <div
+          class="alert alert-info text-center font-tipis"
+          style="margin-bottom: 10px"
+        >
+          <h4>Harap mengunggah fotocopy sertifikat akreditasi sekolah asal.</h4>
+        </div>
+      </div>
+      <div class="input-group">
+        <span
+          class="input-group-btn"
+          style="vertical-align: top"
+        >
+          <span
+            class="btn btn-default btn-file"
+            id="file-akreditasi"
+            fileupload-result="#file-akreditasi-result"
+          >
+            <!-- yg diubah: id, fileupload-result -->
+            Browse...
+          </span>
+        </span>
+        <div
+          id="filename"
+          class="form-control"
+          style="height: fit-content; z-index: 0"
+        >
+          Foto Fotocopy Sertifikat Akreditasi
+        </div>
+      </div>
+      <div>
+        <input
+          class="file-akreditasi"
+          value=""
+          readonly
+          name="file_akreditasi[]"
+          style="position: absolute; opacity: 0; height: 0"
+        />
+        <!-- yg diubah: class, name -->
+      </div>
+      <ul
+        class="fileupload-result"
+        id="file-akreditasi-result"
+        style="margin-top: 12"
+      >
+        <!-- yg diubah: id -->
+        <!-- tempat hasil uploadan -->
+      </ul>
+      <ul
+        class="custom-ul1"
+        type="a"
+      >
+        <li>
+          Untuk lulusan SMP luar Jatim, mengisi peringkat akreditasi dari
+          sekolah asal dengan melihat di situs :
+          <a
+            href="https://bansm.kemdikbud.go.id/akreditasi"
+            target="_blank"
+            style="color: #23527c !important"
+            >https://bansm.kemdikbud.go.id/akreditasi</a
+          >
+          dan mengunggah bukti fotocopy sertifikat akreditasi sekolah asal.
+        </li>
+        <li>
+          Untuk lulusan SMP luar Jatim, mengisi nilai akreditasi dalam bentuk
+          angka dari sekolah asal dan mengunggah foto sertifikat akreditasi.
+        </li>
+      </ul>
+    </div>
+  </div>
+</form>
+<script type="text/javascript">
+  $(document).ready(function () {
+    //# UPLOAD WIZARD TRIGGER #
+    new CustomUploadWizard(
+      $('#file-akreditasi'),
+      $('#fileupload'),
+      {
+        min: 1,
+        max: 1,
+        name: 'Akreditasi',
+        target_name: 'file_akreditasi',
+        target_class: 'file-akreditasi',
+      },
+      [
+        { name: 'tipe_berkas', value: 'akreditasi' },
+        { name: 'smp_uasbn', value: '<?= $smp_uasbn ?>' },
+      ],
+      '<h5>Harap mengunggah file berupa gambar jernih (.jpeg/.jpg/.png) dengan ukuran minimum 100 KB dan maksimum 400 KB</h5>'
+    );
+    //# END of UPLOAD WIZARD TRIGGER #
+
+    var FormAkreditasi_validator = $('#FormAkreditasi').validate({
+      rules: {
+        'file_akreditasi[]': {
+          require_from_group: [1, '.file-akreditasi'],
+        },
+      },
+      messages: {
+        nilai_akreditasi: '* Isilah nilai akreditasi sekolah asal',
+        'file_akreditasi[]': '* Belum melakukan unggah Foto Akreditasi',
+      },
+      success: function (label) {
+        label.detach();
+      },
+      errorElement: 'em',
+      errorPlacement: function (error, element) {
+        // Add the `help-block` class to the error element
+        error.addClass('help-block');
+
+        if (element.prop('type') === 'checkbox') {
+          error.insertAfter(element.parent('label'));
+        } else {
+          error.insertAfter(element);
+        }
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).parent().addClass('has-error').removeClass('has-success');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).parent().removeClass('has-error');
+      },
+    });
+
+    fw_fv.push(FormAkreditasi_validator);
+  });
+</script>

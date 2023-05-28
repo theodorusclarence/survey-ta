@@ -1,0 +1,799 @@
+<style>
+  .visited {
+    color: #00798b !important;
+  }
+
+  .visited > .bubble,
+  .visited > .bubble:after,
+  .visited > .bubble:before {
+    background-color: #00a9c0 !important;
+  }
+
+  .fw-buttons .disabled {
+    cursor: not-allowed !important;
+    pointer-events: auto !important;
+  }
+
+  .panel-default .panel-heading-custom {
+    background-image: none;
+    background-color: #0090a2;
+    color: #fff;
+    border-radius: 0;
+  }
+
+  .wizard-content {
+    border: none;
+  }
+
+  .wizard-pane {
+    padding: 0;
+    display: none;
+  }
+
+  .wizard-pane.active {
+    display: block;
+  }
+</style>
+<script>
+  var fw_fv = [];
+  var lokasi_awal = {
+    lat: -7.2471163,
+    lon: 112.7351081,
+  };
+</script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#exampleBasic').wizard({
+      step: '.progress-indicator > li.fw-used',
+      classes: {
+        step: {
+          done: 'visited',
+          active: 'completed',
+        },
+      },
+      buttonLabels: {
+        next: 'Berikutnya',
+        back: 'Kembali',
+        finish: 'Selesai',
+      },
+      buttonsAppendTo: '.panel-footer',
+      templates: {
+        buttons: function () {
+          const options = this.options;
+          return `<div class="fw-buttons">
+                    <a class="btn btn-danger font-putih" href="#${this.id}" data-wizard="back" role="button">
+                        ${options.buttonLabels.back}</a>
+                    <a class="btn btn-primary pull-right font-putih" href="#${this.id}" data-wizard="next" role="button">
+                        ${options.buttonLabels.next}</a>
+                    <a class="btn btn-primary pull-right font-putih" href="#${this.id}" data-wizard="finish" role="button">
+                        ${options.buttonLabels.finish}</a></div>`;
+        },
+      },
+      onFinish: function () {
+        // alert('finish');
+        swal({
+          title: 'Apakah Anda sudah yakin?',
+          html: "<span class='font-reguler'>Data akan disimpan permanen dan tidak dapat diubah!</span>",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Belum yakin',
+          confirmButtonText: 'Ya, Saya Yakin',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false,
+          showLoaderOnConfirm: true,
+        })
+          .then(function () {
+            $('#verifikasi').submit();
+            $.fancybox({
+              href: '#formulirAkhir',
+              modal: true,
+            });
+            $.fancybox({
+              autoScale: true,
+              transitionIn: 'elastic',
+              transitionOut: 'elastic',
+              speedIn: 500,
+              speedOut: 300,
+              autoDimensions: true,
+              centerOnScroll: true,
+              href: '#formulirAkhir',
+            });
+            $('#fancyBoxBtn').trigger('click');
+          })
+          .catch(function () {});
+      },
+      onNext: function (from, to) {
+        $('html, body').animate(
+          {
+            scrollTop: 0,
+          },
+          200
+        );
+      },
+      onNext: function (from, to) {
+        console.info('BeforeChange:' + from.index + ' to ' + to.index);
+        var api = this.goTo(0);
+        console.log(api);
+        //   return false;
+      },
+      validator: function (step) {
+        if (fw_fv[step.index] === undefined) {
+          //langsung saja kalau gak ada validation e
+          return true;
+        }
+        fw_fv[step.index].form();
+        if (fw_fv[step.index].valid() === true) {
+          const isAkselElement = $('input[name=is_aksel]:checked');
+
+          if (isAkselElement.length) {
+            $('#resume-rapor').empty();
+            $('ul#resume-berkas-rapor').empty();
+
+            const jumlahSemester = isAkselElement.val() === '1' ? 3 : 5;
+
+            Array.from(Array(jumlahSemester).keys()).forEach((i) => {
+              console.log(`input[name="agm[${i}]"]`);
+
+              const agama = $(`input[name="agm[${i}]"]`).val();
+              const ppkn = $(`input[name="pkn[${i}]"]`).val();
+              const ind = $(`input[name="ind[${i}]"]`).val();
+              const mat = $(`input[name="mat[${i}]"]`).val();
+              const ipa = $(`input[name="ipa[${i}]"]`).val();
+              const ips = $(`input[name="ips[${i}]"]`).val();
+              const ing = $(`input[name="ing[${i}]"]`).val();
+
+              $('#resume-rapor').append(`
+                                <tr>
+                                    <td>${i + 1}</td>
+                                    <td>${agama}</td>
+                                    <td>${ppkn}</td>
+                                    <td>${ind}</td>
+                                    <td>${mat}</td>
+                                    <td>${ipa}</td>
+                                    <td>${ips}</td>
+                                    <td>${ing}</td>
+                                </tr>
+                            `);
+            });
+
+            $('ul#resume-berkas-rapor').append(
+              $('ul#rapor-result').children().clone()
+            );
+            $('#resume-rapor-group').css('display', 'block');
+          }
+
+          const lat = $('input#lat').val();
+          const lon = $('input#lon').val();
+          const nearSchool = $('input#near-school').val();
+
+          if (lat && lon) {
+            if (nearSchool === '') {
+              let kota_kab_kk = $('select[name=kab_kota_kk]').val()
+                ? $('select[name=kab_kota_kk]').val().split('_')
+                : null;
+              let kota_kab_skd = $('select#kab_kota_skd', '#skd').val()
+                ? $('select#kab_kota_skd', '#skd').val().split('_')
+                : null;
+
+              kota_kab_kk =
+                kota_kab_kk && kota_kab_kk.length > 1
+                  ? kota_kab_kk[0]
+                  : kota_kab_skd && kota_kab_skd.length > 1
+                  ? kota_kab_skd[0]
+                  : '01';
+              let sekolah_kota_kab_payload = [];
+              $.ajax({
+                url: `<?php echo base_url("api/get_sekolah_kota_kab"); ?>/${kota_kab_kk}`,
+                type: 'GET',
+                dataType: 'json',
+                async: false,
+                success: function (response) {
+                  if (response.data) {
+                    sekolah_kota_kab_payload = response.data;
+                  }
+                },
+              });
+              $.ajax({
+                url: `<?php echo base_url("api/get_rekomendasi_sekolah"); ?>?lat=${lat}&long=${lon}&kota_kab=${kota_kab_kk}`,
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                async: false,
+                data: JSON.stringify({
+                  data: sekolah_kota_kab_payload,
+                }),
+                success: function (response) {
+                  // swal sesuaikan
+                  if (response.success) {
+                    let smaTerdekat = response.data.rekomendasi_sma
+                      ? response.data.rekomendasi_sma.jarak
+                      : 999;
+                    let smkTerdekat = response.data.rekomendasi_smk
+                      ? response.data.rekomendasi_smk.jarak
+                      : 999;
+                    let jarakMin = Math.min(smaTerdekat, smkTerdekat);
+                    let sekolahCek =
+                      smaTerdekat < smkTerdekat
+                        ? response.data.rekomendasi_sma
+                        : response.data.rekomendasi_smk;
+                    $('input#near-school').val(0);
+                    if (jarakMin <= 70) {
+                      $('input#near-school').val(1);
+                      $('input#near-school-npsn').val(sekolahCek.npsn);
+                      $('input#near-school-jarak').val(sekolahCek.jarak);
+                      swal({
+                        title: 'Peringatan',
+                        text: 'Lokasi anda berada dalam area sekolah (SMA/SMK). Silahkan melakukan ganti lokasi.',
+                        type: 'warning',
+                        showCancelButton: true,
+                        cancelButtonText: 'Lanjutkan Pengisian',
+                        confirmButtonText: 'Ganti Lokasi',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        showLoaderOnConfirm: true,
+                      }).then(
+                        function (isConfirm) {
+                          $('input#near-school').val(null);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                          $('#ganti-lokasi').click();
+                        },
+                        function () {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                          $('a[data-wizard=next]').click();
+                        }
+                      );
+                    } else {
+                      $('a[data-wizard=next]').click();
+                    }
+                  }
+                  return true;
+                },
+                error: function (xhr, status, error) {
+                  // swal error
+                  $('input#near-school').val(0);
+                  console.log(xhr.responseText);
+                },
+              });
+            }
+            showMap(lat, lon);
+            $('#resume-lokasi-group').css('display', 'block');
+          }
+
+          const kondisi = $('input[name=kondisi]:checked').val();
+
+          const resumeFileContainer = $('ul#resume-berkas');
+          resumeFileContainer.empty();
+
+          let kotaInput,
+            kecamatanInput,
+            kelurahanInput,
+            rtInput,
+            rwInput,
+            nikInput,
+            noKKInput,
+            alamatInput,
+            hpInput,
+            tanggalTerbitInput,
+            primaryFileInput,
+            kkFiles;
+
+          if (kondisi === 'normal') {
+            kotaInput = $('select#kab_kota_kk', '#kk').val();
+            kecamatanInput =
+              $('select#kecamatan_kk', '#kk').val()?.split('_')[1] ||
+              $('input#kecamatan_kk', '#kk').val();
+            kelurahanInput = $('input#kelurahan', '#kk').val();
+            rtInput = $('input#rt', '#kk').val();
+            rwInput = $('input#rw', '#kk').val();
+            nikInput = $('input#nik', '#kk').val();
+            noKKInput = $('input#no_kk', '#kk').val();
+            alamatInput = $('textarea#alamat', '#kk').val();
+            hpInput = $('input#no_telp', '#kk').val();
+            tanggalTerbitInput = $('input#tanggal_berlaku_kk', '#kk').val();
+
+            resumeFileContainer.append(
+              $('ul#file-kk-result').children().clone()
+            );
+            resumeFileContainer.append(
+              $('ul#file-sk-disdukcapil-result').children().clone()
+            );
+
+            $('#resume-no-kk').text(noKKInput);
+          } else {
+            kotaInput = $('select#kab_kota_skd', '#skd').val();
+            kecamatanInput = $('select#kecamatan_skd', '#skd')
+              .val()
+              ?.split('_')[1];
+            kelurahanInput = $('input#kelurahan_skd', '#skd').val();
+            rtInput = $('input#rt_skd', '#skd').val();
+            rwInput = $('input#rw_skd', '#skd').val();
+            nikInput = $('input#nik2', '#skd').val();
+            alamatInput = $('textarea#alamat_skd', '#skd').val();
+            hpInput = $('input#no_telp', '#skd').val();
+            tanggalTerbitInput = $('input#tanggal_berlaku_skd', '#skd').val();
+
+            resumeFileContainer.append(
+              $('ul#file-skd-result').children().clone()
+            );
+
+            if (kondisi === 'ponpes panti')
+              resumeFileContainer.append(
+                $('ul#file-sk-pondok-panti-result').children().clone()
+              );
+            else if (kondisi === 'bencana')
+              resumeFileContainer.append(
+                $('ul#file-sk-bencana-result').children().clone()
+              );
+
+            $('#resume-no-kk-container').css('display', 'none');
+          }
+
+          if (kotaInput) {
+            $('#resume-kota').text(kotaInput?.split('_')[1]);
+            $('#resume-kecamatan').text(kecamatanInput);
+            $('#resume-kelurahan').text(kelurahanInput);
+            $('#resume-rt-rw').text(`${rtInput}/${rwInput}`);
+            $('#resume-nik').text(nikInput);
+            $('#resume-alamat').text(alamatInput);
+            $('#resume-hp').text(hpInput);
+            $('#resume-tanggal-terbit').text(tanggalTerbitInput);
+
+            $('#resume-kk-group').css('display', 'block');
+            $('#resume-berkas-group').css('display', 'block');
+          }
+
+          return true;
+        } else {
+          var elem = $('.has-error').first().children().first();
+          $('html, body').animate(
+            {
+              scrollTop: elem.offset().top - window.innerHeight / 4,
+            },
+            200
+          );
+          return false;
+        }
+      },
+    });
+  });
+</script>
+<div class="row font">
+  <h2 class="font-tebel text-center">
+    <?= $topik ?>
+    <?php if (isset($sub_topik)) { ?>
+    <span style="font-size: 25px"
+      >|
+      <?= $sub_topik ?>
+    </span>
+    <?php } ?>
+    <small
+      >|
+      <?= $nama ?></small
+    >
+  </h2>
+  <hr />
+  <div class="col-md-12 col-md-border">
+    <div
+      id="exampleBasic"
+      class="wizard"
+    >
+      <ul
+        class="progress-indicator"
+        role="tablist"
+      >
+        <?php
+                $found_first_step = false;
+                if (isset($fw_steps)) {
+                    foreach ($fw_steps as $step) {
+                        if (
+                            isset($step["notused"]) and
+                            $step["notused"] and
+                            !$found_first_step
+                        ) {
+                            
+                        } elseif (
+                            isset($step["notused"]) and $step["notused"]
+                        ) {
+                        } elseif (!$found_first_step) {
+                            $found_first_step = true;
+                        } else {
+                        }
+                    }
+                }
+                ?>
+      </ul>
+      <?php if (isset($pesan_penolakan) and $pesan_penolakan) { ?>
+      <div>
+        <div
+          class="alert alert-warning text-center font-tipis"
+          style="margin-bottom: 10px"
+        >
+          <h4><?php echo $pesan_penolakan; ?></h4>
+        </div>
+      </div>
+      <?php } ?>
+      <div>
+        <div
+          class="alert alert-info text-center font-tipis"
+          style="margin-bottom: 10px"
+        >
+          <h4>
+            Masuk sebagai
+            <b
+              ><?= $datadiri["data_siswa"]
+                        ->smp_nama_siswa ?></b
+            >. Jika data yang tertera tidak sesuai, silahkan lapor pada sekolah
+            asal.
+          </h4>
+        </div>
+      </div>
+      <div class="panel panel-default card-1">
+        <div class="wizard-content">
+          <?php foreach ($fw_contents as $i =>
+          $content) { echo '<div class="wizard-pane ' . ($i == 0 ? "active" :
+          "") . '" role="tabpanel">' . $content . "
+        </div>
+        "; } ?>
+        <div class="panel-footer"></div>
+        <form
+          action="<?= base_url(
+                        $route
+                    ) ?>"
+          method="post"
+          accept-charset="utf-8"
+          id="form-utama"
+          enctype="text/plain"
+        ></form>
+      </div>
+    </div>
+  </div>
+</div>
+<a
+  style="display: none"
+  data-fancybox
+  data-src="#formulirAkhir"
+  id="fancyBoxBtn"
+  href="javascript:;"
+>
+  Trigger the fancybox
+</a>
+<style>
+  .s-dan-k {
+    height: 100%;
+    max-height: calc(100% - 194px);
+    overflow-y: scroll;
+    text-align: justify;
+  }
+
+  .s-dan-k::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #f5f5f5;
+  }
+
+  .s-dan-k::-webkit-scrollbar {
+    width: 7px;
+    background-color: #f5f5f5;
+  }
+
+  .s-dan-k::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #0090a2;
+  }
+
+  @media (min-width: 768px) {
+    .s-dan-k {
+      height: 300;
+    }
+  }
+</style>
+<div
+  style="display: none"
+  id="formulirAkhir"
+>
+  <div class="">
+    <div class="col">
+      <div class="s-dan-k">
+        <h3 class="font-agak-tebel">SYARAT & KETENTUAN</h3>
+        <hr />
+        <p>Dengan sungguh-sungguh menyatakan bahwa saya:</p>
+        <ol class="nice-ol">
+          <li>
+            Tidak sedang terlibat dalam tindak pidana dan/atau penyalahgunaan
+            narkoba.
+          </li>
+          <li>
+            Tidak bertato dan/atau tidak bertindik bagi calon peserta didik baru
+            laki-laki dan tidak bertindik bukan pada tempatnya bagi calon
+            peserta didik baru wanita.
+          </li>
+        </ol>
+        <br />
+        <p>
+          Demikian pernyataan ini saya buat dengan sebenarnya dan penuh rasa
+          tanggung jawab. Apabila dikemudian hari atau sewaktu-waktu
+          ditemukan/terbukti bahwa pernyataan tersebut ternyata tidak benar dan
+          tidak sesuai dengan kondisi faktual, maka saya bertanggungjawab untuk
+          diproses sesuai dengan aturan hukum yang berlaku dan jika diterima
+          sebagai Calon Peserta Didik Baru, dicabut haknya sebagai peserta didik
+          baru.
+        </p>
+      </div>
+      <form
+        action=""
+        id="sk-konfirmasi"
+        style="margin: 0"
+      >
+        <div style="margin-bottom: 10px; margin-top: 10px">
+          <input
+            id="agreement-read"
+            disabled
+            type="checkbox"
+            name="agreement"
+            required
+          />
+          <label for="agreement-read">Saya setuju</label>
+        </div>
+        <div id="errorContainerSK1"></div>
+        <div
+          style="
+            background-color: #0090a2;
+            margin: -44;
+            margin-top: 0;
+            text-align: right;
+            padding: 10 24;
+          "
+        >
+          <button
+            class="btn btn-secondary fileinput-button"
+            style="border-radius: 0"
+            type="button"
+            onclick="fancyBox2Trigger();"
+          >
+            Berikutnya
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  const fancyBox2Trigger = () => {
+    $('#sk-konfirmasi').form();
+    if ($('#sk-konfirmasi').valid() == true) {
+      $('#formulirAkhir').css('display', 'none');
+      $('#fancyBoxBtn2').trigger('click');
+    }
+  };
+
+  $(document).ready(function () {
+    $('#sk-konfirmasi').validate({
+      message: {
+        agreement: 'Anda harus mencentang sebelum melanjutkan.',
+      },
+      errorPlacement: function (error, element) {
+        error.appendTo($('#errorContainerSK1'));
+      },
+    });
+    $('#sk-konfirmasi2').validate({
+      rules: {
+        agreement: {
+          required: true,
+        },
+      },
+      message: {
+        agreement: 'Anda harus mencentang sebelum melanjutkan.',
+      },
+      errorPlacement: function (error, element) {
+        error.appendTo($('#errorContainerSK2'));
+      },
+    });
+  });
+</script>
+<a
+  style="display: none"
+  data-fancybox
+  data-src="#formulirAkhir2"
+  id="fancyBoxBtn2"
+  href="javascript:;"
+>
+  Trigger the fancybox
+</a>
+<div
+  style="display: none"
+  id="formulirAkhir2"
+>
+  <div class="">
+    <div class="col">
+      <div class="s-dan-k">
+        <h3
+          class="font-agak-tebel"
+          class="s-dan-k"
+        >
+          SYARAT & KETENTUAN
+        </h3>
+        <hr />
+        <p>Dengan sungguh-sungguh menyatakan bahwa:</p>
+        <ol class="nice-ol">
+          <li>
+            Seluruh pernyataan data dan informasi beserta seluruh dokumen yang
+            saya lampirkan dalam berkas pendaftaran Peneriman Peserta Didik Baru
+            SMAN/SMKN 2022 Provinsi Jawa Timur adalah benar.
+          </li>
+          <li>
+            Apabila diperlukan, saya bersedia memberikan informasi lebih lanjut
+            untuk melengkapi dokumen pendaftaran ini.
+          </li>
+        </ol>
+        <br />
+        <p>
+          Demikian pernyataan ini saya buat dengan sebenarnya dan penuh rasa
+          tanggung jawab. Apabila dikemudian hari ditemukan bahwa data/dokumen
+          yang saya sampaikan tidak benar dan/atau ada pemalsuan, maka seluruh
+          keputusan yang telah ditetapkan berdasarkan berkas tersebut batal
+          berdasarkan hukum dan saya bersedia dikenakan sanksi sesuai ketentuan
+          peraturan perundang-undangan yang berlaku dan jika diterima sebagai
+          Calon Peserta Didik Baru, dicabut haknya sebagai peserta didik baru.
+        </p>
+      </div>
+      <form
+        action=""
+        id="sk-konfirmasi2"
+        style="margin: 0"
+      >
+        <div style="margin-bottom: 10px; margin-top: 10px">
+          <input
+            id="agreement-read2"
+            type="checkbox"
+            name="agreement"
+            required
+          />
+          <label for="agreement-read2">Saya setuju</label>
+        </div>
+        <div id="errorContainerSK2"></div>
+        <div
+          style="
+            background-color: #0090a2;
+            margin: -44;
+            margin-top: 0;
+            text-align: right;
+            padding: 10 24;
+          "
+        >
+          <button
+            id="btnSubmit"
+            class="btn btn-secondary fileinput-button"
+            style="border-radius: 0"
+            type="submit"
+          >
+            Simpan Permanen
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  function getFormData($form){
+      var unindexed_array = $form.serializeArray();
+      var indexed_array = {};
+
+      $.map(unindexed_array, function(n, i){
+          var key =n['name'];
+          var is_arr=false;
+          if(/(\[\d+\])$/.test(key)){
+              key = key.replace( /(\[\d+\])$/, "");
+              is_arr=true;
+          }else if(/(\[\])$/.test(key)){
+              key = key.replace( /(\[\])$/, "");
+              is_arr=true;
+          }
+
+          if(is_arr && !(key in indexed_array)) indexed_array[key] = [];
+          if(typeof n['value'] === 'string') n['value']=n['value'].trim()
+
+          if(is_arr){
+              indexed_array[key].push( n['value']);
+          }else{
+              indexed_array[key] = n['value'];
+          }
+
+      });
+
+      return indexed_array;
+  }
+
+  $(document).ready(function() {
+      $('#sk-konfirmasi2').submit(function(e) {
+          e.preventDefault();
+          if ($('#sk-konfirmasi2').valid() == true) {
+              $("#btnSubmit").attr("disabled", true);
+              SubmitForm();
+          }
+      });
+  })
+
+  function SubmitForm() {
+      $("#form-utama").submit();
+  }
+  $(document).ready(function() {
+      var formUtama = $("#form-utama")
+      formUtama.submit(function(e) {
+          var obj = $("form");
+
+          var all= {
+              "csrf_test_name" : "<?php echo $this->security->get_csrf_hash(); ?>"
+          };
+          $.each(obj, function(i, val) {
+              Object.assign(all,getFormData($(val)));
+          });
+
+          $('<input />').attr('type', 'hidden')
+              .attr('name', 'data')
+              .attr('value', JSON.stringify(all))
+              .appendTo(formUtama);
+
+          return true;
+      });
+  });
+
+  function konfirmasi_batal() {
+      swal({
+          title: 'Yakin Batalkan Pengambilan PIN?',
+          text: "Data yang anda masukkan sebelumnya tidak akan disimpan!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Belum yakin',
+          confirmButtonText: 'Ya, Batalkan Pengambilan',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false,
+          showLoaderOnConfirm: true
+      }).then(function() {
+          window.location.href = "<?php echo base_url(
+              "pin_rapor/batalkan_pengambilan"
+          ); ?>";
+      })
+  }
+
+  function cariLokasiKabKota() {
+      let kota_kab_kk = $('select[name=kab_kota_kk]').val();
+      // ambil kode
+      let value = kota_kab_kk.split("_");
+      if (value.length > 1) {
+          $.ajax({
+              url: "<?php echo base_url("pin/getKoordinatKabKota"); ?>",
+              type: "POST",
+              dataType: "json",
+              cache: true,
+              async: false,
+              data: {
+                  kab_kota: value[0], // kode kota kabupaten
+                  <?php echo $this->security->get_csrf_token_name(); ?>: <?php echo "'" .
+  $this->security->get_csrf_hash() .
+  "'"; ?>
+              },
+              success: function(response) {
+                  if (Object.keys(response).length > 0) {
+                      lokasi_awal.lat = Number.parseFloat(response.latitude_awal)
+                      lokasi_awal.lon = Number.parseFloat(response.longitude_awal)
+                  }
+                  if (setLokasiPeta != undefined) {
+                      setLokasiPeta()
+                  }
+                  return true;
+              },
+              error: function(xhr, status, error) {
+                  console.log(xhr.responseText);
+              }
+          });
+      }
+  }
+</script>

@@ -1,0 +1,459 @@
+<?php
+if ($this->session->userdata("daftar_afirmasi")) { $nama =
+$this->session->userdata("daftar_afirmasi")["nama"]; $nik =
+$this->session->userdata("daftar_afirmasi")["nik"]; $nama_orangtua =
+$this->session->userdata("daftar_afirmasi")[ "nama_orangtua" ]; $tempat_lahir =
+$this->session->userdata("daftar_afirmasi")["tempat_lahir"]; $alamat =
+$this->session->userdata("daftar_afirmasi")["alamat"]; $date = date_create(
+$this->session->userdata("daftar_afirmasi")["tanggal_lahir"] ); $tanggal_lahir =
+date_format($date, "d M Y"); $jalur =
+$this->session->userdata("daftar_afirmasi")["jalur"]; } else { $nama = $nik =
+$tempat_lahir = $tanggal_lahir = $nama_orangtua = $alamat = $jalur = null; } ?>
+<div class="panel-heading panel-heading-custom">
+  <h3
+    class="tulisan-tebel font-putih"
+    style="font-size: 25pt"
+  >
+    Pilih Sekolah Tujuan
+  </h3>
+</div>
+<div
+  class="panel-body"
+  style="padding: 20px 30px"
+>
+  <div class="col-sm-12">
+    <?php if ($this->session->flashdata("validation")) { ?>
+    <div class="alert alert-danger text-center">
+      <h4><?= $this->session->flashdata("validation") ?></h4>
+    </div>
+    <?php } ?>
+    <div class="alert alert-info text-center">
+      <h4 class="font-agak-tebel">
+        Pilihlah 1 (satu) SMA/SMK yang Hendak Dituju
+      </h4>
+    </div>
+  </div>
+  <div class="col-md-6 col-md-border">
+    <div class="form-group">
+      <label class="font-tipis">Nomor Induk Kependudukan</label>
+      <div class="bottom_border">
+        <span class="font-agak-tebel"><?= $nik ?></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="font-tipis">Nama Lengkap</label>
+      <div class="bottom_border">
+        <span class="font-agak-tebel"><?= $nama ?></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="font-tipis">Tempat Tanggal Lahir</label>
+      <div class="bottom_border">
+        <span class="font-agak-tebel"
+          ><?= $tempat_lahir ?>,
+          <?= $tanggal_lahir ?></span
+        >
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="font-tipis">Alamat</label>
+      <div class="bottom_border">
+        <span class="font-agak-tebel"><?= $alamat ?></span>
+      </div>
+    </div>
+  </div>
+  <form
+    action=""
+    id="form-sekolah"
+  >
+    <div class="col-md-6 col-md-border">
+      <div class="form-group">
+        <h4 style="display: inline-block; margin-right: 10px">
+          <b>Pilih Jenjang Sekolah</b>
+        </h4>
+        <div class="alert alert-danger text-center font-agak-tebel">
+          <p>
+            Klik jenjang yang diinginkan (SMA/SMK) sebelum memilih kota dan
+            sekolah
+          </p>
+        </div>
+      </div>
+      <?php if (isset($jalur) && $jalur == "Penyandang Disabilitas") { ?>
+      <div class="form-group">
+        <label>Ketunaan <span style="color: red">*</span></label>
+        <select
+          name="ketunaan"
+          id="ketunaan"
+          class="form-control"
+          required
+        >
+          <option
+            value=""
+            selected
+            disabled
+          >
+            Pilih Ketunaan
+          </option>
+          <option value="1">Tunanetra</option>
+          <option value="2">Tunarungu</option>
+          <option value="3">Tunagrahita</option>
+          <option value="4">Tunadaksa</option>
+          <option value="5">Tunawicara</option>
+        </select>
+      </div>
+      <?php } ?>
+      <ul class="nav nav-tabs nav-justified">
+        <li class="active">
+          <a
+            href="#1"
+            onclick="setIsSMA(true)"
+            id="trigger_sma"
+            data-toggle="tab"
+            style="font-size: 1.75rem"
+            >Pendaftaran <strong>SMA</strong></a
+          >
+        </li>
+        <li>
+          <a
+            href="#2"
+            onclick="setIsSMA(false)"
+            id="trigger_smk"
+            data-toggle="tab"
+            style="font-size: 1.75rem"
+            >Pendaftaran <strong>SMK</strong></a
+          >
+        </li>
+      </ul>
+      <input
+        type="hidden"
+        name="is_pilih_sma"
+        value="true"
+        id="is_pilih_sma"
+      />
+      <div class="tab-content">
+        <div
+          class="tab-pane active"
+          id="1"
+          style="margin: auto"
+        >
+          <div class="form-group">
+            <label>Kota/Kab <span style="color: red">*</span></label>
+            <select
+              name="kab_kota"
+              id="kab_kota_sma"
+              class="form-control"
+              required
+            >
+              <option style="display: none"></option>
+              <option value="<?= KODE_KOTA ._ .NAMA_KOTA ?>">
+                <?= NAMA_KOTA ?>
+              </option>
+              <?php if (isset($kab_kota_beririsan)) {
+                                foreach ($kab_kota_beririsan as $kotakab) { ?>
+              <option
+                value="<?= $kotakab->kode_kota_kab_tetangga ._ .$kotakab->nama_kota_kab_tetangga ?>"
+              >
+                <?= $kotakab->nama_kota_kab_tetangga ?>
+              </option>
+              <?php }
+                            } ?>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>SMA Tujuan <span style="color: red">*</span></label>
+            <select
+              name="sekolah"
+              id="sekolah_sma"
+              class="form-control"
+              required
+              disabled
+            ></select>
+          </div>
+        </div>
+        <div
+          class="tab-pane"
+          onclick="setIsSMA(false)"
+          id="2"
+          style="margin: auto"
+        >
+          <div class="form-group">
+            <label>Kota/Kab <span style="color: red">*</span></label>
+            <select
+              name="kab_kota"
+              id="kab_kota_smk"
+              class="form-control"
+              required
+            >
+              <option style="display: none"></option>
+              <?php if (isset($all_kab_kota)) {
+                                foreach ($all_kab_kota as $kotakab) { ?>
+              <option
+                value="<?= $kotakab->kode_kota_kabupaten ._ .$kotakab->nama_kota_kabupaten ?>"
+              >
+                <?= $kotakab->nama_kota_kabupaten ?>
+              </option>
+              <?php }
+                            } ?>
+            </select>
+          </div>
+          <?php
+//if (isset($jalur) && $jalur != "Penyandang Disabilitas") {
+?>
+          <div class="form-group">
+            <label>SMK Tujuan <span style="color: red">*</span></label>
+            <select
+              name="sekolah"
+              id="sekolah_smk"
+              class="form-control"
+              required
+              disabled
+            ></select>
+          </div>
+          <?php
+//} else {
+?>
+          <!-- <div class="form-group">
+                            <label>SMK Tujuan <span style="color:red">*</span></label>
+                            <select name="sekolah_induk" id="sekolah_smk" class="form-control" disabled>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Jurusan <span style="color:red">*</span></label>
+                            <select name="sekolah" id="smk_jurusan" class="form-control" disabled>
+                            </select>
+                        </div> -->
+          <?php
+//}
+?>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+
+      // Global variable
+      const kabKotaSMA = $('#kab_kota_sma');
+      const pilihanSMA = $('#sekolah_sma');
+      const kabKotaSMK = $('#kab_kota_smk');
+      const pilihanSMK = $('#sekolah_smk');
+      // const jurusanSMK = $('#smk_jurusan');
+
+      // Init select2
+      $.fn.select2.defaults.set( "theme", "bootstrap" );
+      $.fn.select2.defaults.set( "width", "100%" );
+      kabKotaSMA.select2({
+          placeholder: "Pilih Kota/Kabupaten",
+      });
+      pilihanSMA.select2({
+          placeholder: "Pilih SMA",
+      });
+      kabKotaSMK.select2({
+          placeholder: "Pilih Kota/Kabupaten",
+      });
+      pilihanSMK.select2({
+          placeholder: "Pilih SMK",
+      });
+
+      if(<?php
+  echo "'" . $jalur . "'";
+  ?> === 'Penyandang Disabilitas') {
+          jurusanSMK.select2({
+              placeholder: "Pilih Jurusan",
+          });
+      }
+
+      const setIsSMA = (isSMA) => {
+          if(isSMA)
+              $('#is_pilih_sma').val(true);
+          else
+              $('#is_pilih_sma').val(false);
+      }
+
+      pilihanSMA.change(function() {
+          if(!pilihanSMA.val()) {
+              return;
+          }
+          pilihanSMK.val(null).trigger('change');
+          if(jalur === 'Penyandang Disabilitas') {
+              jurusanSMK.val(null).trigger('change');
+          }
+      });
+
+      pilihanSMK.change(function() {
+          if(!pilihanSMK.val())
+              return;
+          pilihanSMA.val(null).trigger('change');
+
+          if(jalur === 'Penyandang Disabilitas') {
+              const optionsCreator = function (obj) {
+                  obj.id = obj.kode_sekolah;
+                  obj.text = obj.nama_jurusan;
+                  return obj;
+              };
+              const url = "<?php
+  echo base_url('daftar/afirmasi/get_jurusan')
+  ?>"
+          //     const mydata = {kode_sekolah : $(this).val()};
+              targetSelect2Loading("#smk_jurusan", "Pilih Jurusan", url, mydata, optionsCreator, "GET")
+          }
+      });
+
+      kabKotaSMA.change(function() {
+          const optionsCreator = function (obj) {
+              obj.id = obj.kode_sekolah;
+              obj.text = obj.nama_sekolah;
+              return obj;
+          };
+          const url = "<?php echo base_url("daftar/afirmasi/get_sma"); ?>"
+          const url = (jalur === "Penyandang Disabilitas") ? "<?php
+  echo base_url('daftar/afirmasi/get_sma_inklusi')
+  ?>" : "<?php
+  echo base_url('daftar/afirmasi/get_sma')
+  ?>"
+          const mydata = {kode_kota_kabupaten : $(this).val().split('_')[0]};
+          targetSelect2Loading("#sekolah_sma", "Pilih SMA", url, mydata, optionsCreator, "GET")
+      });
+
+      kabKotaSMK.change(function() {
+          const optionsCreator = function (obj) {
+              obj.id = obj.kode_sekolah;
+              obj.text = `${obj.nama_sekolah} - ${obj.nama_jurusan}`;
+              obj.text = (jalur === "Penyandang Disabilitas") ? `${obj.nama_sekolah}` : `${obj.nama_sekolah} - ${obj.nama_jurusan}`;
+
+              if(obj.nama_jurusan !== "\\N" || jalur === "Penyandang Disabilitas")
+              if(obj.nama_jurusan !== "\\N")
+                  return obj;
+          };
+          const url = "<?php echo base_url("daftar/afirmasi/get_smk"); ?>"
+          const mydata = {kode_kota_kabupaten : $(this).val().split('_')[0]};
+          targetSelect2Loading("#sekolah_smk", "Pilih SMK", url, mydata, optionsCreator, "GET")
+      });
+
+      let formValidatorSekolah = $("#form-sekolah").validate({
+          rules: {
+              kab_kota: {
+                required: true
+              },
+              sekolah: {
+                required: true
+              },
+              ketunaan: {
+                required: true
+              },
+          },
+          messages: {
+              kab_kota: "Anda belum memilih kota/kabupaten",
+              sekolah: "Anda belum memilih sekolah",
+              ketunaan: "Anda belum memilih ketunaan",
+          },
+          success: function(label) {
+              label.detach();
+          },
+          errorElement: "em",
+          errorPlacement: function ( error, element ) {
+              error.addClass( "help-block" );
+              error.insertAfter(element);
+          },
+          highlight: function ( element, errorClass, validClass ) {
+              $( element ).parent().addClass( "has-error" ).removeClass( "has-success" );
+          },
+          unhighlight: function (element, errorClass, validClass) {
+              $( element ).parent().removeClass( "has-error" );
+          }
+      });
+
+      fw_fv.push(formValidatorSekolah);
+
+      //set sma/smk dari session
+      $(document).ready(function() {
+        <?php if (isset($is_pilih_sma) && $is_pilih_sma) { ?>
+          $('#trigger_sma').trigger('click');
+        <?php } elseif (isset($is_pilih_sma) && !$is_pilih_sma) { ?>
+          $('#trigger_smk').trigger('click');
+        <?php } ?>
+      });
+
+      function konfirmasi_batal() {
+          swal({
+              title: 'Yakin Batalkan Pendaftaran?',
+              text: "Data yang Anda masukkan sebelumnya tidak akan disimpan!",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              cancelButtonText: 'Belum yakin',
+              confirmButtonText: 'Ya, Batalkan Pengambilan',
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              allowEnterKey: false,
+              showLoaderOnConfirm: true
+          }).then(function () {
+              window.location.href = "<?php echo base_url(
+          "daftar/afirmasi"
+      ); ?>";
+          });
+      }
+
+      document.querySelector('#form_pilihsekolah').addEventListener('submit', function(e) {
+          e.preventDefault();
+          let jenjang_pilihan;
+          $('#is_pilih_sma').val() === "true" ? jenjang_pilihan = "SMA" : jenjang_pilihan = "SMK";
+
+          if (jenjang_pilihan == "SMA" && !$('#sekolah_sma').val()) {
+              swal({
+                  title: 'Pilihan SMA Belum Terisi',
+                  html: "<span class='font-reguler'>Harap memilih 1 (satu) SMA pilihan Anda</span>",
+                  type: 'warning',
+                  confirmButtonColor: '#3085d6',
+                  confirmButtonText: 'Kembali',
+                  showLoaderOnConfirm: true
+              });
+          } else if (jenjang_pilihan == "SMA") {
+              var sma = $('#sekolah_sma option:selected').html();
+              swal({
+                  title: 'Anda sudah yakin dengan Pilihan Anda?',
+                  html: "<span class='font-reguler'>Sekolah Pilihan Pertama Anda</span><h2 class='font-tebel'><b>"+sma+"</b></h2>",
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  cancelButtonText: 'Belum yakin',
+                  confirmButtonText: 'Ya, Saya Yakin',
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                  allowEnterKey: false,
+                  showLoaderOnConfirm: true
+              }).then(function() {
+                  $('#form_pilihsekolah').submit();
+              });
+          } else if (jenjang_pilihan == "SMK" && !$('#sekolah_smk').val()) {
+              swal({
+                  title: 'Pilihan SMK Belum Terisi',
+                  html: "<span class='font-reguler'>Harap memilih 1 (satu) SMK beserta bidang keahlian pilihan Anda</span>",
+                  type: 'warning',
+                  confirmButtonColor: '#3085d6',
+                  confirmButtonText: 'Kembali',
+                  showLoaderOnConfirm: true
+              });
+          } else if (jenjang_pilihan == "SMK") {
+              var smk = $('#sekolah_smk option:selected').html();
+              swal({
+                  title: 'Anda sudah yakin dengan Pilihan Anda?',
+                  html: "<span class='font-reguler'>Sekolah Pilihan Anda</span><h2 class='font-tebel'><b>"+smk+"</b></h2>",
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  cancelButtonText: 'Belum yakin',
+                  confirmButtonText: 'Ya, Saya Yakin',
+                  allowOutsideClick: false,
+                  allowEscapeKey: false,
+                  allowEnterKey: false,
+                  showLoaderOnConfirm: true
+              }).then(function() {
+                  $('#form_pilihsekolah').submit();
+              });
+          }
+      });
+</script>

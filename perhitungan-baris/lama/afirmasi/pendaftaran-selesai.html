@@ -1,0 +1,148 @@
+<div class="row font">
+  <h2 class="font-tebel text-center">
+    Pendaftaran
+    <span style="font-size: 25px"
+      >| Jalur
+      <?= $data_diri["jalur"] ?></span
+    >
+    <small
+      >|
+      <?= $data_diri["nama"] ?></small
+    >
+  </h2>
+  <hr />
+  <div class="col-md-12 col-md-border">
+    <ul class="progress-indicator">
+      <li class="completed"><span class="bubble"></span> Login</li>
+      <li class="completed">
+        <span class="bubble"></span> Pilih Sekolah Tujuan
+      </li>
+      <li class="completed"><span class="bubble"></span> Unggah Berkas</li>
+      <li class="completed"><span class="bubble"></span> Konfirmasi Data</li>
+      <li class="completed"><span class="bubble"></span> Selesai</li>
+    </ul>
+    <div class="panel panel-default card-1">
+      <div class="panel-heading panel-heading-custom text-center">
+        <h3
+          class="tulisan-tebel font-putih"
+          style="font-size: 25pt"
+        >
+          Pendaftaran Selesai
+        </h3>
+      </div>
+      <div
+        class="panel-body"
+        style="padding: 20px 30px"
+      >
+        <div class="text-center">
+          <h1 class="font-tebel"><b>Selamat!</b></h1>
+          <h4>
+            Anda telah melakukan pendaftaran pada Jalur
+            <?= $data_diri[
+                        "jalur"
+                    ] ?>
+            PPDB Jawa Timur 2022
+          </h4>
+        </div>
+        <hr />
+        <h4 class="font-hijau"><strong>Data Diri</strong></h4>
+        <div class="form-group">
+          <label class="font-tipis">NISN</label>
+          <div class="bottom_border">
+            <span class="font-agak-tebel"
+              ><?= $data_diri[
+                            "no_un"
+                        ] ?></span
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="font-tipis">Nomor Induk Kependudukan</label>
+          <div class="bottom_border">
+            <span class="font-agak-tebel"
+              ><?= $data_diri[
+                            "nik"
+                        ] ?></span
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="font-tipis">Nama Lengkap</label>
+          <div class="bottom_border">
+            <span class="font-agak-tebel"
+              ><?= $data_diri[
+                            "nama"
+                        ] ?></span
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="font-tipis">Tanggal Lahir</label>
+          <div class="bottom_border">
+            <span class="font-agak-tebel"
+              ><?= $data_diri[
+                            "tanggal_lahir"
+                        ] ?></span
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="font-tipis">Alamat</label>
+          <div class="bottom_border">
+            <span class="font-agak-tebel"
+              ><?= $data_diri[
+                            "alamat"
+                        ] ?></span
+            >
+          </div>
+        </div>
+        <hr />
+        <h4 class="font-hijau"><strong>Data Sekolah Pilihan</strong></h4>
+        <div class="form-group">
+          <label class="font-tipis">Nama</label>
+          <div class="bottom_border">
+            <span class="font-agak-tebel"
+              ><?= $data_pendaftaran[
+                            "sekolah"
+                        ] ?></span
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="font-tipis">Alamat</label>
+          <div class="bottom_border">
+            <span class="font-agak-tebel"
+              ><?= $data_pendaftaran[
+                            "alamat"
+                        ] ?></span
+            >
+          </div>
+        </div>
+        <hr />
+        <div class="alert alert-info text-center">
+          <h4 class="font-agak-tebel">
+            Hasil akan diumumkan pada tanggal 24 Juni 2022
+          </h4>
+          <h4 class="font-reguler">
+            Anda dapat mencetak bukti pendaftaran dengan mengklik tombol Cetak
+            Bukti berikut
+          </h4>
+          <a
+            href="<?php echo base_url(unduh_bukti/bukti_daftar/ . $id_bukti); ?>"
+            target="_blank"
+            class="btn btn-success font-putih"
+            >Cetak Bukti</a
+          >
+        </div>
+      </div>
+      <div class="panel-footer text-center">
+        <a
+          href="<?php echo base_url(daftar/afirmasi); ?>"
+          class="btn btn-primary font-putih"
+          >Kembali ke Halaman Login</a
+        >
+        <span class="clearfix"></span>
+      </div>
+    </div>
+  </div>
+</div>
