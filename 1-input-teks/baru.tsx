@@ -1,14 +1,18 @@
 <FormProvider {...methods}>
   <form>
-    <DropzoneInput
-      containerClassName='@lg:col-span-2'
-      id='kk.kk'
-      label='Unggah Kartu Keluarga'
+    <Input
+      id='kk.nik'
+      label='NIK'
+      inputMode='numeric'
       validation={{
-        required: 'Kartu Keluarga harus diisi',
+        required: 'NIK harus diisi',
+        pattern: {
+          value: REGEX.NUMBER,
+          message: 'NIK harus berupa angka',
+        },
+        ...exactLength(16, 'NIK harus berjumlah 16 digit'),
       }}
-      accept={IMAGE_UPLOAD_ALLOWED_EXTENSION}
-      helperText={IMAGE_UPLOAD_HELPER_TEXT}
+      placeholder='Masukkan NIK'
     />
   </form>
 </FormProvider>;
